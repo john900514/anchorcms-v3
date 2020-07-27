@@ -25,8 +25,14 @@ Route::group([
     Route::get('/abilities/{role}', 'Admin\InternalAdminJSONController@role_abilities');
     Route::get('/roles/{client_id}', 'Admin\InternalAdminJSONController@client_roles');
 
+    Route::group(['prefix' => 'push-notifications'], function () {
+        Route::get('/', 'Admin\PushNotificationsController@index');
+    });
+
+
     CRUD::resource('crud-users', 'Admin\UsersCrudController');
     CRUD::resource('crud-roles', 'Admin\RolesCrudController');
     CRUD::resource('crud-abilities', 'Admin\AbilitiesCrudController');
     CRUD::resource('crud-clients', 'Admin\ClientsCrudController');
+    CRUD::resource('crud-mobile-apps', 'Admin\MobileAppCrudController');
 }); // this should be the absolute last line of this file

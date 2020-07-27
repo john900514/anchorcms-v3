@@ -72,7 +72,7 @@
     @if (Route::has('backpack.auth.login'))
         <div class="top-right links">
             @if(backpack_user() != null)
-                <a href="{{ url('/cms/dashboard') }}">Home</a>
+                <a href="{{ url('/dashboard') }}">Home</a>
             @else
                 <a href="{{ route('backpack.auth.login') }}">Login</a>
 

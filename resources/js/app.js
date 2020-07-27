@@ -7,6 +7,17 @@
 require('./bootstrap');
 
 window.Vue = require('vue');
+window.Vuetify = require('vuetify');
+
+Vue.use(Vuetify);
+
+const opts = {
+    icons: {
+        iconfont: 'fa', // 'mdi' || 'mdiSvg' || 'md' || 'fa' || 'fa4'
+    },
+};
+
+export default new Vuetify(opts);
 
 /**
  * The following block of code may be used to automatically register your
@@ -21,6 +32,7 @@ window.Vue = require('vue');
 
 Vue.component('role-ability-assign', require('./components/containers/RoleAbilitySelectContainer.vue').default);
 Vue.component('user-client-role-ability-assign', require('./components/containers/UserClientRoleAbilitySelectContainer.vue').default);
+Vue.component('push-notifications', require('./components/containers/PushNotificationsContainer.vue').default);
 
 //Vue.component('checkbox-grid', require('./components/presenters/CheckboxGridComponent.vue').default);
 

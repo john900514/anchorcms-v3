@@ -11,6 +11,10 @@
             <li class="breadcrumb-item active">Dashboard</li>
             @break
 
+            @case('push-notifications')
+            <li class="breadcrumb-item active">Push Notifications</li>
+            @break
+
             @default
             <li class="breadcrumb-item"><a href="{{ url($crud->route) }}" class="text-capitalize">{{ $crud->entity_name_plural }}</a></li>
             <li class="breadcrumb-item active">{{ $active_bc }}</li>
