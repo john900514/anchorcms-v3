@@ -330,8 +330,28 @@
                 this.showAvailablePeeps = false;
             },
             submitPanel() {
-                if(this.amtUsers > 0) {
-                    alert('Soon baby :)');
+                if(this.getAmtUsers > 0) {
+                    if(this.textMsg !== '') {
+                        let entity =  (this.showAvailablePeeps) ? this.selectedUser : this.users;
+                        let users = [];
+                        for(let x in entity) {
+                            users.push(entity.expo_push_token)
+                        }
+                        let payload = {
+                            users: users,
+                            msg: this.textMsg
+                        };
+
+                        if(this.textUrl !== '') {
+                            payload['url'] = this.textUrl
+                        }
+
+                        this.$emit('fire', payload);
+                    }
+                    else
+                    {
+                        alert('Msg to Send cannot be empty');
+                    }
                 }
                 else {
                     alert('Need at least one user to send message to');
