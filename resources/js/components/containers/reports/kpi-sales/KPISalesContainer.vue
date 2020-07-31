@@ -1,0 +1,73 @@
+<template>
+    <kpi-report
+        :loading="loading"
+        :error="errorMsg"
+    ></kpi-report>
+</template>
+
+<script>
+    import KpiReport from '../../../presenters/widgets/kpi-sales/KPIReport';
+    export default {
+        name: "KPISalesContainer",
+        components: {
+            KpiReport
+        },
+        props: ['clientId'],
+        data() {
+            return {
+                loading: false,
+                errorMsg: ''
+            };
+        },
+        computed: {},
+        methods: {
+            processKPIData(data) {
+                console.log('processing data...', data);
+            },
+            getKPIReport() {
+                let _this = this;
+                this.loading = true;
+
+                axios.get(`reports/${this.clientId}/kpi`)
+                    .then(res => {
+                        console.log('KPI report response - ', res);
+
+                        if('data' in res) {
+                            let data = res.data;
+
+                            if ('success' in data) {
+                                if (data['success']) {
+                                    _this.errorMsg = 'Processing Data';
+                                    _this.processKPIData(data['data']);
+                                    _this.loading = false;
+                                } else {
+                                    _this.errorMsg = data['reason'];
+                                    _this.loading = false;
+                                }
+                            } else {
+                                // unknown response
+                                _this.errorMsg = 'Unknown Response from Anchor. Please Try Again.';
+                                _this.loading = false;
+                            }
+                        }
+                    })
+                    .catch(e => {
+                        console.log(e);
+                        _this.errorMsg = 'Could not communicate with Anchor. Please Try Again.'
+                        _this.loading = false;
+                    })
+            }
+        },
+        mounted() {
+            this.getKPIReport();
+
+            console.log('KPISalesContainer mounted!');
+        }
+    }
+</script>
+
+<style scoped>
+    h1 {
+        text-align: center;
+    }
+</style>

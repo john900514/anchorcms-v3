@@ -5,12 +5,17 @@ namespace AnchorCMS;
 use AnchorCMS\Permissions;
 use Backpack\CRUD\CrudTrait;
 use Illuminate\Database\Eloquent\Model;
+use Silber\Bouncer\Database\Concerns\HasAbilities;
 
 class Roles extends Model
 {
-    use CrudTrait;
+    use CrudTrait, HasAbilities;
 
     protected $fillable = ['name', 'title'];
+
+    protected $casts = [
+        'entity_id' => 'uuid'
+    ];
 
     public function getAssignedAbilities($role, $client_id = null)
     {

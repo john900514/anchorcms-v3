@@ -14,11 +14,17 @@
     <div class="row">
         <div class="col-md-12">
             <div class="box">
-                <div class="box-header with-border">
-                    <div class="box-title">{{ trans('backpack::base.login_status') }}</div>
-                </div>
+                @if(count($components) > 0)
+                    @foreach($components as $component => $config)
+                        @if($component == 'dashboard' && (backpack_user()->can('view-dashboard') || backpack_user()->can('view-all-dashboards')))
+                            @include('anchor-cms.dashboards.index')
+                        @endif
 
+                        <?php /* if $component == other-things */ ?>
+                    @endforeach
+                @else
                 <div class="box-body">{{ trans('backpack::base.logged_in') }}</div>
+                @endif
             </div>
         </div>
     </div>
