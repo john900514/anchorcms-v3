@@ -98,13 +98,13 @@ class KPIReportsAPIController extends Controller
                             if(!is_null($budget['google_budget']))
                             {
                                 // Do the math
-                                $budget['spend-google'] = number_format(($budget['google_budget'] / $days_in_mo) * $day_of_mo, 2);
+                                $budget['spend-google'] = number_format(($budget['google_budget'] / $days_in_mo) * $day_of_mo, 2, '.', '');
                             }
 
                             if(!is_null($budget['facebook_ig_budget']))
                             {
                                 // Do the math
-                                $budget['spend-fb'] = number_format(($budget['facebook_ig_budget'] / $days_in_mo) * $day_of_mo, 2);
+                                $budget['spend-fb'] = number_format(($budget['facebook_ig_budget'] / $days_in_mo) * $day_of_mo, 2, '.', '');
                             }
 
                             $budget['spend-total'] = $budget['spend-fb'] + $budget['spend-google'];

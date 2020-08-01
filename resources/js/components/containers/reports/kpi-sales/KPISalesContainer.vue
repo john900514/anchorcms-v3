@@ -2,6 +2,7 @@
     <kpi-report
         :loading="loading"
         :error="errorMsg"
+        :report="report"
     ></kpi-report>
 </template>
 
@@ -16,13 +17,48 @@
         data() {
             return {
                 loading: false,
-                errorMsg: ''
+                errorMsg: '',
+                report: ''
             };
         },
         computed: {},
         methods: {
             processKPIData(data) {
                 console.log('processing data...', data);
+
+                for(let reportType in data) {
+                    switch(reportType) {
+                        case 'daily':
+                            data[reportType]['headers'] = [];
+                            for(let market in data[reportType]) {
+                                for(let column in data[reportType][market]) {
+                                    data[reportType]['headers'].push(column);
+                                }
+                                break;
+                            }
+                            break;
+
+                        case 'monthly':
+                            data[reportType]['headers'] = [];
+                            for(let market in data[reportType]) {
+                                for(let column in data[reportType][market]) {
+                                    data[reportType]['headers'].push(column);
+                                }
+                                break;
+                            }
+                            break;
+
+                        case 'promo':
+
+                            break;
+
+                        default:
+                            console.log(`Unknown Report Type ${reportType}. Skipping...`);
+                    }
+                }
+
+                this.report = data;
+                this.errorMsg = '';
             },
             getKPIReport() {
                 let _this = this;
@@ -37,8 +73,9 @@
 
                             if ('success' in data) {
                                 if (data['success']) {
-                                    _this.errorMsg = 'Processing Data';
-                                    _this.processKPIData(data['data']);
+                                    //_this.errorMsg = 'Processing Data';
+                                    _this.errorMsg = '';
+                                    _this.processKPIData(data['report']);
                                     _this.loading = false;
                                 } else {
                                     _this.errorMsg = data['reason'];

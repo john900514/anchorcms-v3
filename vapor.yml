@@ -18,6 +18,8 @@ environments:
         - 'curl -sL https://deb.nodesource.com/setup_10.x | bash -'
         - 'apt-get install -y nodejs'
         - 'npm install && npm run prod && rm -rf node_modules'
+      deploy:
+        - 'php artisan migrate --force'
   staging:
       domain: a-dev.capeandbay.com
       memory: 1024

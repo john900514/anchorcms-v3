@@ -1,12 +1,7 @@
 <template>
-    <div class="dash-container">
+    <div class="dash-container card">
+        <header class="card-header">{{ title }}</header>
         <div class="inner-dash-container">
-            <div class="dash-title">
-                <div class="inner-dash-title">
-                    <h3>{{ title }}</h3>
-                </div>
-            </div>
-
             <div class="dash-content">
                 <div class="inner-dash-content">
                     <div class="loading-piece" v-if="loading">
@@ -36,16 +31,16 @@
                                         <div class="inner-right-dashboard">
                                             <div class="widget-box" v-for="(widgetData, idx) in rightWidgets">
                                                 <div class="inner-widget">
-                                                    <div class="widget-title-segment">
-                                                        <div class="inner-widget-title">
-                                                            <h3>{{ widgetData.name }}</h3>
+                                                    <div class="widget-title-segment card">
+                                                        <header class="card-header">
+                                                            <div>{{ widgetData.name }}</div>
                                                             <small>{{ widgetData.description }}</small>
-                                                        </div>
-                                                    </div>
+                                                        </header>
 
-                                                    <component v-bind:is="widgetData['component_name']"
-                                                        :client-id="widgetData['client_id']"
-                                                    ></component>
+                                                        <component v-bind:is="widgetData['component_name']"
+                                                                   :client-id="widgetData['client_id']"
+                                                        ></component>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -85,7 +80,7 @@
         }
 
         .inner-dash-container {
-            padding: 2.5%;
+            padding: 0 2.5% 2.5%;
 
             display: flex;
             flex-flow: column;
@@ -98,7 +93,7 @@
         }
 
         .dash-content {
-            height: 90%;
+            height: 100%;
             width: 100%;
         }
 
