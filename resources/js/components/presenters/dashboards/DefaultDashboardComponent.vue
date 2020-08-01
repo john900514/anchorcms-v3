@@ -25,7 +25,22 @@
                             <div class="lower-dashboard-section">
                                 <div class="inner-lower-dashboard">
                                     <div class="left-dashboard-section">
-                                        <div class="inner-left-dashboard"></div>
+                                        <div class="inner-left-dashboard">
+                                            <div class="widget-box" v-for="(widgetData, idx) in leftWidgets">
+                                                <div class="inner-widget">
+                                                    <div class="widget-title-segment card">
+                                                        <header class="card-header">
+                                                            <div>{{ widgetData.name }}</div>
+                                                            <small>{{ widgetData.description }}</small>
+                                                        </header>
+
+                                                        <component v-bind:is="widgetData['component_name']"
+                                                                   :client-id="widgetData['client_id']"
+                                                        ></component>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                     <div class="right-dashboard-section">
                                         <div class="inner-right-dashboard">
@@ -47,7 +62,6 @@
                                     </div>
                                 </div>
                             </div>
-
                         </div>
                     </div>
                 </div>
@@ -163,6 +177,10 @@
 
             display: flex;
             flex-flow: column;
+        }
+
+        .inner-left-dashboard {
+            margin-right: 3%;
         }
     }
 </style>

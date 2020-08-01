@@ -38,6 +38,10 @@ Vue.component('push-notifications', require('./components/containers/PushNotific
 Vue.component('main-dashboard', require('./components/containers/dashboards/DefaultDashboardContainer.vue').default);
 
 Vue.component('kpi-report', require('./components/containers/reports/kpi-sales/KPISalesContainer.vue').default);
+Vue.component('mega-button-card', require('./components/containers/widgets/mega-button/MegaButtonContainer.vue').default);
+Vue.component('default-left-widget', require('./components/containers/widgets/default/defaultLeftContainer.vue').default);
+Vue.component('default-right-widget', require('./components/containers/widgets/default/defaultRightContainer.vue').default);
+Vue.component('default-top-widget', require('./components/containers/widgets/default/defaultTopContainer.vue').default);
 
 //Vue.component('checkbox-grid', require('./components/presenters/CheckboxGridComponent.vue').default);
 

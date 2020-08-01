@@ -26,8 +26,21 @@
             },
             widgetsErrorMsg(msg) {
                 console.log('Received widget error - '+ msg);
-                this.error = true;
-                this.errorMsg = msg;
+                if(msg === '') {
+                    this.errorMsg = '';
+                    this.loadDefaultWidgets()
+                }
+                else {
+                    if(msg === 'No Widgets Assigned') {
+                        this.errorMsg = '';
+                        this.loadDefaultWidgets();
+                    }
+                    else
+                    {
+                        this.errorMsg = msg;
+                    }
+
+                }
                 this.loading = false;
             }
         },
@@ -39,7 +52,10 @@
                 topWidgets: [],
                 leftWidgets: [],
                 rightWidgets: [],
-                availableWidgets: []
+                availableLeftWidgets: [],
+                availableRightWidgets: [],
+                availableTopWidgets: [],
+
             };
         },
         computed: {
@@ -60,6 +76,26 @@
                 console.log('Processing widgets - ', widgets);
                 this.availableWidgets = widgets['available'];
 
+                for(let x in widgets['available']) {
+                    switch(widgets['available'][x]['location']) {
+                        case 'left':
+                            this.availableLeftWidgets.push(widgets['available'][x]);
+                            break;
+
+                        case 'right':
+                            this.availableRightWidgets.push(widgets['available'][x]);
+                            break;
+
+                        case 'center':
+                        default:
+                            this.availableTopWidgets.push(widgets['available'][x])
+                    }
+                }
+
+                console.log('available left widgets - ', this.availableLeftWidgets);
+                console.log('available right widgets - ', this.availableRightWidgets);
+                console.log('available top widgets - ', this.availableTopWidgets);
+
                 for(let x in widgets['default']) {
                     switch(widgets['default'][x]['location']) {
                         case 'left':
@@ -67,7 +103,7 @@
                             break;
 
                         case 'right':
-                            this.rightWidgets.push(widgets['default'][x])
+                            this.rightWidgets.push(widgets['default'][x]);
                             break;
 
                         case 'center':
@@ -75,8 +111,67 @@
                             this.topWidgets.push(widgets['default'][x])
                     }
                 }
+
+                console.log('default left widgets - ', this.leftWidgets);
+                console.log('default right widgets - ', this.rightWidgets);
+                console.log('default top widgets - ', this.topWidgets);
                 //this.processedWidgets = widgets['default'];
 
+                // prefill the top left and right with any available widgets (if available)
+                if((this.leftWidgets.length === 0) && (this.availableLeftWidgets.length !== 0))
+                {
+                    this.leftWidgets.push(this.availableLeftWidgets[0]);
+                }
+
+                if((this.rightWidgets.length === 0) && (this.availableRightWidgets.length !== 0))
+                {
+                    this.rightWidgets.push(this.availableRightWidgets[0]);
+                }
+
+                if((this.topWidgets.length === 0) && (this.availableTopWidgets.length !== 0))
+                {
+                    this.topWidgets.push(this.availableTopWidgets[0]);
+                }
+                // if the default widgets are empty;
+
+                this.loadDefaultWidgets();
+
+            },
+            loadDefaultWidgets() {
+                if((this.leftWidgets.length === 0) && (this.availableLeftWidgets.length === 0)) {
+                    let left = [
+                        {
+                            name: 'Announcement',
+                            description: '',
+                            'component_name': 'default-left-widget',
+                            'client_id': 1
+
+                        }
+                    ];
+
+                    this.availableLeftWidgets = left;
+                    this.leftWidgets = left;
+                }
+
+                if((this.rightWidgets.length === 0) && (this.availableRightWidgets.length === 0)) {
+                    let right = [
+                        {
+                            name: 'Play a Dumb Game',
+                            description: 'While you wait...',
+                            'component_name': 'default-right-widget',
+                            'client_id': 1
+                        }
+                    ];
+
+                    this.availableRightWidgets = right;
+                    this.rightWidgets = right;
+                }
+
+                // @todo - the top widgets!
+                let top = [];
+
+                this.errorMsg = '';
+                this.loading = false;
             },
             ...mapActions({
                 getUserAvailableWidgets: 'dashboard/getUserAvailableWidgets'
