@@ -226,15 +226,23 @@
             width: 100%;
         }
 
-        h2, td, th {
-            font-size: 80%;
-        }
-
         .report-totals .row {
             display: flex;
             flex-flow: row;
             justify-content: space-between;
             margin: 0 30%;
+        }
+    }
+
+    @media screen and (max-width: 999px) {
+        h2, td, th {
+            font-size: 60%;
+        }
+    }
+
+    @media screen and (min-width: 1000px) {
+        h2, td, th {
+            font-size: 80%;
         }
     }
 </style>
