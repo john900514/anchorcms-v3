@@ -8,7 +8,7 @@
 
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
-
+    <link href="{!! asset('css/app.css') !!}" rel="stylesheet" />
     <!-- Styles -->
     <style>
         html, body {
@@ -28,6 +28,7 @@
             align-items: center;
             display: flex;
             justify-content: center;
+            height: 95%;
         }
 
         .position-ref {
@@ -56,14 +57,30 @@
             color: white;
             padding: 0 25px;
             font-size: 13px;
-            font-weight: 600;
+            font-weight: 700;
             letter-spacing: .1rem;
             text-decoration: none;
             text-transform: uppercase;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji" !important;
         }
 
         .m-b-md {
             margin-bottom: 30px;
+        }
+
+        footer {
+            width: 100%;
+            height: 5%;
+        }
+
+        .inner-footer {
+            text-align: center;
+        }
+
+        footer small {
+            color: #fff;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji" !important;
+            font-weight: 700;
         }
     </style>
 </head>
@@ -93,5 +110,13 @@
         </div>
     </div>
 </div>
+
+<footer>
+    <div class="inner-footer">
+        <small><i class="fal fa-copyright"></i>2020. Cape & Bay. All Rights Reserved. </small>
+        <br />
+        <small>v.{!! env('APP_VERSION') !!}| Build {!! env('APP_BUILD') !!}</small>
+    </div>
+</footer>
 </body>
 </html>
