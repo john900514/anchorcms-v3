@@ -36,6 +36,7 @@ class ClientAdBudgetAPIController extends Controller
             foreach($budgets->toArray() as $budget)
             {
                 // get spends math
+                $budget['uuid'] = $budget['id'];
                 $budget['spend-fb'] = 0;
                 $budget['spend-google'] = 0;
                 // Get the day of the month (yesterday)

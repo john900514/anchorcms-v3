@@ -34,7 +34,8 @@ class KPIReportsAPIController extends Controller
             $access_granted = false;
             $allowed_roles = str_getcsv($kpi_record->allowed_roles,',');
             $allowed_abilities = str_getcsv($kpi_record->allowed_abilities,',');
-            // See if the user has permissions to view report or fail
+
+            // ACL - See if the user has permissions to view report or fail
             if(!Bouncer::is(backpack_user())->a('god'))
             {
                 foreach ($allowed_roles as $role)
@@ -126,6 +127,7 @@ class KPIReportsAPIController extends Controller
                             $markets[$market_name]['spend-total'] += $budget['spend-total'];
                         }
 
+                        ksort($markets);
                         $payload = [
                             'budgets' => $budgets->toArray(),
                             'markets' => $markets
