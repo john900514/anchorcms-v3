@@ -11,7 +11,7 @@ class AdBudgets extends Model
 {
     use CrudTrait,SoftDeletes, Uuid;
 
-    protected $fillable = ['client_id', 'market_id', 'club_id', 'facebook_ig_budget', 'google_budget', 'active'];
+    protected $fillable = ['client_id', 'market_id', 'club_id', 'location_name','facebook_ig_budget', 'google_budget', 'active'];
 
     protected $casts = [
         'id' => 'uuid'

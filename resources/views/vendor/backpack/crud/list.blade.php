@@ -194,9 +194,11 @@
                 margin-left: 2%;
             }
 
+            @if (!$crud->exportButtons())
             #crudTable_wrapper .col-sm-2.col-md-4.text-center{
                 display:none;
             }
+            @endif
 
             .pagination {
                 flex-flow: row;
