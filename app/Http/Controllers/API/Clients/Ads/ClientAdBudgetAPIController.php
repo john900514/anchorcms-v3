@@ -39,24 +39,36 @@ class ClientAdBudgetAPIController extends Controller
                 $budget['uuid'] = $budget['id'];
                 $budget['spend-fb'] = 0;
                 $budget['spend-google'] = 0;
-                // Get the day of the month (yesterday)
-                $day_of_mo = intval(date('d',strtotime('-1 day')));
-                // Get the amount of days in the current month
-                $days_in_mo = intval(date('t'));
+
+                $data = $this->request->all();
+                if(array_key_exists('date', $data))
+                {
+                    // Get the day of the month (yesterday)
+                    $day_of_mo = intval(date('d', strtotime($data['date'])));
+                    // Get the amount of days in the current month
+                    $days_in_mo = intval(date('t', strtotime($data['date'])));
+                }
+                else
+                {
+                    // Get the day of the month (yesterday)
+                    $day_of_mo = intval(date('d',strtotime('-1 day')));
+                    // Get the amount of days in the current month
+                    $days_in_mo = intval(date('t'));
+                }
 
                 if(!is_null($budget['google_budget']))
                 {
                     // Do the math
-                    $budget['spend-google'] = number_format(($budget['google_budget'] / $days_in_mo) * $day_of_mo, 2);
+                    $budget['spend-google'] = number_format(($budget['google_budget'] / $days_in_mo) * $day_of_mo, 2, '.', '');
                 }
 
                 if(!is_null($budget['facebook_ig_budget']))
                 {
                     // Do the math
-                    $budget['spend-fb'] = number_format(($budget['facebook_ig_budget'] / $days_in_mo) * $day_of_mo, 2);
+                    $budget['spend-fb'] = number_format(($budget['facebook_ig_budget'] / $days_in_mo) * $day_of_mo, 2, '.', '');
                 }
 
-                $budget['spend-total'] = $budget['spend-fb'] + $budget['spend-google'];
+                $budget['spend-total'] = number_format(floatVal($budget['spend-fb']) + floatVal($budget['spend-google']), 2, '.', '');
                 $market_name = AdMarkets::find($budget['market_id'])->market_name;
 
                 if(!array_key_exists($market_name, $markets))
@@ -70,9 +82,21 @@ class ClientAdBudgetAPIController extends Controller
                 }
 
                 $markets[$market_name]['budgets'][] = $budget;
-                $markets[$market_name]['spend-fb'] += $budget['spend-fb'];
-                $markets[$market_name]['spend-google'] += $budget['spend-google'];
-                $markets[$market_name]['spend-total'] += $budget['spend-total'];
+
+                try {
+                    $markets[$market_name]['spend-fb'] = $markets[$market_name]['spend-fb'] + floatVal($budget['spend-fb']);
+                }
+                catch(\Exception $e)
+                {
+                    dd(floatVal($budget['spend-fb']));
+                }
+
+                $markets[$market_name]['spend-google'] += floatVal($budget['spend-google']);
+                $markets[$market_name]['spend-total'] += floatVal($budget['spend-total']);
+
+                $markets[$market_name]['spend-fb'] = number_format($markets[$market_name]['spend-fb'],2, '.', '');
+                $markets[$market_name]['spend-google'] = number_format($markets[$market_name]['spend-google'],2, '.', '');
+                $markets[$market_name]['spend-total'] = number_format($markets[$market_name]['spend-total'],2, '.', '');
             }
 
             // response in clubs and markets
