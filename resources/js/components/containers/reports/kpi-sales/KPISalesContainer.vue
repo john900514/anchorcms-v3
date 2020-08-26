@@ -26,37 +26,6 @@
             processKPIData(data) {
                 console.log('processing data...', data);
 
-                for(let reportType in data) {
-                    switch(reportType) {
-                        case 'daily':
-                            data[reportType]['headers'] = [];
-                            for(let market in data[reportType]) {
-                                for(let column in data[reportType][market]) {
-                                    data[reportType]['headers'].push(column);
-                                }
-                                break;
-                            }
-                            break;
-
-                        case 'monthly':
-                            data[reportType]['headers'] = [];
-                            for(let market in data[reportType]) {
-                                for(let column in data[reportType][market]) {
-                                    data[reportType]['headers'].push(column);
-                                }
-                                break;
-                            }
-                            break;
-
-                        case 'promo':
-
-                            break;
-
-                        default:
-                            console.log(`Unknown Report Type ${reportType}. Skipping...`);
-                    }
-                }
-
                 this.report = data;
                 this.errorMsg = '';
             },

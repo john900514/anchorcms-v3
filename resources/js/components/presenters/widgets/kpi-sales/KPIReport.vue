@@ -22,99 +22,18 @@
                                     <!-- Daily Sales -->
                                     <div style="width:100%;text-align: center;margin-top: 2em;">
                                         <h2 style="text-align: center;">--- DAILY Sales ---</h2>
-                                        <h2 style="text-align: center;">Sales By Market for {{ getDate }}</h2>
-                                        <div class="report-table">
+                                        <div class="report-table" v-for="(reportData, reportKey) in report">
+                                            <h2 style="text-align: center;">{{ reportData.name }}</h2>
                                             <table style="margin:1em auto;">
                                                 <thead>
-                                                <tr><th v-for="(columnName, cidx) in  repData.daily.headers">{{columnName}}</th></tr>
+                                                <tr><th v-for="(columnName, cidx) in  reportData.columns">{{columnName}}</th></tr>
                                                 </thead>
                                                 <tbody>
-                                                <tr v-for="(marketData, marketName) in  repData.daily" v-if="(marketName !== 'totals') && (marketName !== 'headers')">
-                                                    <td v-for="(mval, mcol) in marketData">{{ mval }}</td>
+                                                <tr v-for="(marketData, marketName) in  reportData.report">
+                                                    <td v-for="(mval, mcol) in marketData">{{ typeof(mval) !== 'number' ? mval : transformNumber(mval) }}</td>
                                                 </tr>
                                                 </tbody>
                                             </table>
-                                        </div>
-                                        <div class="report-totals">
-                                            <h2 style="text-align: center;">DAILY Sales Totals</h2>
-                                            <div style="text-align: center;">
-                                                <table style="margin:1em auto;">
-                                                    <tbody>
-                                                    <tr class="row" v-for="(total, col) in repData.daily.totals">
-                                                        <td> {{ col }} </td>
-                                                        <td>{{ total.toFixed(2) }}</td>
-                                                    </tr>
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!-- Monthly Sales -->
-                                    <div style="width:100%;text-align: center;margin-top: 2em;">
-                                        <h2 style="text-align: center;">--- MONTHLY Sales ---</h2>
-                                        <h2 style="text-align: center;">Sales By Market for {{ getMonth }}, {{ getYear }} </h2>
-                                        <div class="report-table">
-                                            <table style="margin:1em auto;">
-                                                <thead>
-                                                <tr><th v-for="(columnName, cidx) in  repData.monthly.headers">{{columnName}}</th></tr>
-                                                </thead>
-                                                <tbody>
-                                                <tr v-for="(marketData, marketName) in  repData.monthly" v-if="(marketName !== 'totals') && (marketName !== 'headers')">
-                                                    <td v-for="(mval, mcol) in marketData">{{ (mcol === 'Market') ? mval : mval.toFixed(2) }}</td>
-                                                </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                        <div class="report-totals">
-                                            <h2 style="text-align: center;">MONTHLY Sales Totals</h2>
-                                            <div style="text-align: center;">
-                                                <table style="margin:1em auto;">
-                                                    <tbody>
-                                                    <tr class="row" v-for="(total, col) in repData.monthly.totals">
-                                                        <td> {{ col }} </td>
-                                                        <td>{{ total.toFixed(2) }}</td>
-                                                    </tr>
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!-- Promo -->
-                                    <div style="width:100%;text-align: center;margin-top: 2em;" v-if="false">
-                                        <div class="report-table">
-                                            <h2 style="text-align: center;">--- PROMO Sales ---</h2>
-                                            <h2 style="text-align: center;">Promo Code Use Daily Totals for {{ getDate }}</h2>
-                                            <div style="margin:1em auto;">
-                                                <table style="margin:1em auto;">
-                                                    <tbody v-if=" repData.promo.daily.length === 0">
-                                                    <tr class="row"><td>No Sales Data Yet. Maybe Later!</td></tr>
-                                                    </tbody>
-                                                    <tbody v-else>
-                                                    <tr class="row" v-for="(sales, promo) in repData.promo.daily">
-                                                        <td style="margin-right: 3em;">{{promo}}</td>
-                                                        <td>{{sales}}</td>
-                                                    </tr>
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                        </div>
-                                        <div class="report-table" style="margin:2em auto;">
-                                            <h2 style="text-align: center;">Promo Code Sales for {{ getMonth }} {{ getYear }}</h2>
-                                            <div style="margin:1em auto;">
-                                                <table style="margin:1em auto;">
-                                                    <tbody v-if=" repData.promo.monthly.length === 0">
-                                                    <tr class="row"><td>No Sales Data Yet. Maybe Later!</td></tr>
-                                                    </tbody>
-                                                    <tbody v-else>
-                                                    <tr class="row" v-for="(sales, promo) in repData.promo.monthly">
-                                                        <td>{{promo}}</td>
-                                                        <td>{{sales}}</td>
-                                                    </tr>
-                                                    </tbody>
-                                                </table>
-                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -159,7 +78,23 @@
             getYear() {
                 return new Date().getFullYear()
             },
-        }
+        },
+        methods: {
+            transformNumber(n)
+            {
+                let results = 0;
+                // Is int.
+                if(Number(n) === n && n % 1 === 0)
+                {
+                    results = parseInt(n);
+                }
+                else
+                {
+                    results = parseFloat(n).toFixed(2);
+                }
+                return results;
+            }
+        },
     }
 </script>
 

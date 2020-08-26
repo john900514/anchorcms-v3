@@ -82,55 +82,8 @@ class KPIReportsAPIController extends Controller
                             'Authorization' => 'Client '.base64_encode($client_id)
                         ];
 
-                        $budgets = $this->budgets->whereClientId($client_id)->get();
-                        //$markets = $this->markets->whereClientId($client_id)->get();
-                        $markets = [];
-
-                        foreach($budgets->toArray() as $budget)
-                        {
-                            // get spends math
-                            $budget['spend-fb'] = 0;
-                            $budget['spend-google'] = 0;
-                            // Get the day of the month (yesterday)
-                            $day_of_mo = intval(date('d',strtotime('-1 day')));
-                            // Get the amount of days in the current month
-                            $days_in_mo = intval(date('t'));
-
-                            if(!is_null($budget['google_budget']))
-                            {
-                                // Do the math
-                                $budget['spend-google'] = number_format(($budget['google_budget'] / $days_in_mo) * $day_of_mo, 2, '.', '');
-                            }
-
-                            if(!is_null($budget['facebook_ig_budget']))
-                            {
-                                // Do the math
-                                $budget['spend-fb'] = number_format(($budget['facebook_ig_budget'] / $days_in_mo) * $day_of_mo, 2, '.', '');
-                            }
-
-                            $budget['spend-total'] = $budget['spend-fb'] + $budget['spend-google'];
-                            $market_name = AdMarkets::find($budget['market_id'])->market_name;
-
-                            if(!array_key_exists($market_name, $markets))
-                            {
-                                $markets[$market_name] = [
-                                    'spend-fb' => 0,
-                                    'spend-google' => 0,
-                                    'spend-total' => 0,
-                                    'budgets' => []
-                                ];
-                            }
-
-                            $markets[$market_name]['budgets'][] = $budget;
-                            $markets[$market_name]['spend-fb'] += $budget['spend-fb'];
-                            $markets[$market_name]['spend-google'] += $budget['spend-google'];
-                            $markets[$market_name]['spend-total'] += $budget['spend-total'];
-                        }
-
-                        ksort($markets);
                         $payload = [
-                            'budgets' => $budgets->toArray(),
-                            'markets' => $markets
+                            'date' => date('Y-m-d', strtotime('now -2DAY'))
                         ];
 
                         // Ping the client for the KPI data or fail
