@@ -83,7 +83,7 @@ class KPIReportsAPIController extends Controller
                         ];
 
                         $payload = [
-                            'date' => date('Y-m-d', strtotime('now -2DAY'))
+                            'date' => date('Y-m-d', strtotime('now -1DAY'))
                         ];
 
                         // Ping the client for the KPI data or fail

@@ -1,10 +1,23 @@
 <template>
-    <h1>Woop Woop</h1>
+    <button-tank
+        :loading="loading"
+        :error="error"
+    ></button-tank>
 </template>
 
 <script>
+import ButtonTank from '../../../presenters/widgets/mega-buttons/ComponentsOfMegaButtons';
     export default {
-        name: "MegaButtonContainer"
+        name: "MegaButtonContainer",
+        components: {
+            ButtonTank
+        },
+        data() {
+            return {
+                loading: true,
+                error: ''
+            }
+        }
     }
 </script>
 
