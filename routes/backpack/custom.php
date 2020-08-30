@@ -27,6 +27,7 @@ Route::group([
 
     Route::group(['prefix' => 'reports'], function () {
         Route::get('/{client_id}/kpi', 'API\Reports\KPIReportsAPIController@get_report');
+        Route::get('/{client_id}/mailchimp/engage', 'API\Reports\MailchimpAPIController@get_engagement_report');
     });
 
     Route::get('/abilities', 'Admin\InternalAdminJSONController@abilities');

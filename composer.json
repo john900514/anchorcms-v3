@@ -20,7 +20,8 @@
         "laravel/vapor-core": "^2.8",
         "league/flysystem-aws-s3-v3": "^1.0",
         "silber/bouncer": "v1.0.0-rc.8",
-        "spatie/laravel-activitylog": "^3.14"
+        "spatie/laravel-activitylog": "^3.14",
+        "capeandbay/mailchimp": "dev-master"
     },
     "require-dev": {
         "andrey-helldar/laravel-app": "^1.0",
@@ -33,6 +34,12 @@
         "nunomaduro/collision": "^3.0",
         "phpunit/phpunit": "^8.0"
     },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/capeandbay-devs/mailchimp"
+        }
+    ],
     "config": {
         "optimize-autoloader": true,
         "preferred-install": "dist",
