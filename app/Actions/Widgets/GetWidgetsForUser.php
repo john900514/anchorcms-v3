@@ -71,9 +71,62 @@ class GetWidgetsForUser
                 if(backpack_user()->isHostUser())
                 {
                     // get all role_assigned_widgets as available, followed by user_assigned_widgets as also_available
-                    // get all user_preferred_widgets as default
+                    $roles = backpack_user()->getRoles();
+                    $widgets = $this->widgets->whereActive(1)
+                        ->wherePage($page);
 
-                    // if host_user is scoped, show only widgets for that client.
+                    foreach ($roles as $idx => $role)
+                    {
+                        if($idx == 0)
+                        {
+                            $widgets = $widgets->where(function ($query) use ($role) {
+                                $query->where('allowed_roles', 'LIKE', "%$role%");
+                            });
+                        }
+                        else
+                        {
+                            $widgets = $widgets->where(function ($query) use ($role) {
+                                $query->orWhere('allowed_roles', 'LIKE', "%$role%");
+                            });
+                        }
+                    }
+
+                    $widgets = $widgets->get();
+
+                    if(count($widgets) > 0)
+                    {
+                        foreach($widgets as $idx => $widget)
+                        {
+                            if(!backpack_user()->can($widget->allowed_abilities))
+                            {
+                                unset($widgets[$idx]);
+                            }
+                        }
+
+                        // Get all scoped if active_client is toggled
+                        if(session()->has('active_client'))
+                        {
+                            $client = $this->clients->find(session()->get('active_client'));
+                            $widgets = $widgets->where('client_id', '=', $client->id);
+                        }
+                    }
+
+                    // get all user_preferred_widgets as default
+                    if(count($widgets) > 0)
+                    {
+                        $available_widgets = array_values($widgets->toArray());
+
+                        // getPreferredWidgets
+                        $client_id = session()->has('active_client') ? $client->id : null;
+                        $preferred_widgets = $this->widgets->specific_user_preferred(backpack_user()->id, $page, $client_id);
+
+
+                        // no scoping for gods.
+                        $results = [
+                            'available' => $available_widgets,
+                            'default' => ($preferred_widgets) ? $preferred_widgets->toArray() : [collect($available_widgets)->first()]
+                        ];
+                    }
                 }
                 else
                 {
