@@ -16,7 +16,22 @@
                         </div>
                     </div>
                     <div class="content-piece" v-else>
-                        <p>This is where the grid of buttonz go, dee deedee.</p>
+                        <div class="inner-content-piece">
+                            <div class="button-grid">
+                                <div class="inner-button-grid">
+                                    <div class="mega-button-cell" v-for="(buttonDeets, idx) in buttons">
+                                        <div class="inner-cell">
+                                            <mega-button
+                                                :text="buttonDeets.text"
+                                                :image="buttonDeets.image"
+                                                :click-id="buttonDeets.id"
+                                                @mega-click="megaButtonClicked"
+                                            ></mega-button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -25,13 +40,20 @@
 </template>
 
 <script>
+    import MegaButton from "./MegaButton";
     import SexyHurricaneLoading from '../loading/SexyHurricane';
     export default {
         name: "ComponentsOfMegaButtons",
         components: {
-            SexyHurricaneLoading
+            MegaButton,
+            SexyHurricaneLoading,
         },
-        props: ['loading', 'error']
+        props: ['loading', 'error', 'buttons'],
+        methods: {
+            megaButtonClicked(clickId) {
+                this.$emit('mega-click', clickId);
+            }
+        }
     }
 </script>
 
@@ -63,6 +85,8 @@
         -webkit-box-shadow:0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset;
         -moz-box-shadow:0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset;
         box-shadow:0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset;
+
+        padding: 5% 2.5%;
     }
     .inner-mega-content:before, .inner-mega-content:after
     {
@@ -93,17 +117,59 @@
     .c-dark-theme .inner-mega-content {
         background-color: #2c2c34;
     }
+
+    .content-piece {
+        width: 100%;
+        height: 100%;
+    }
+
+    .inner-content-piece {
+
+    }
+
+    .button-grid {
+        width: 100%;
+        height: 100%;
+    }
+
+    .inner-button-grid {
+        display: flex;
+    }
 }
 
 @media screen and (max-width: 999px) {
     h2, td, th {
         font-size: 60%;
     }
+
+    .inner-button-grid {
+        flex-flow: row wrap;
+    }
+
+    .mega-button-cell {
+        width: 50%;
+    }
+
+    .inner-cell {
+        margin: 0 5%;
+    }
 }
 
 @media screen and (min-width: 1000px) {
     h2, td, th {
         font-size: 80%;
+    }
+
+    .inner-button-grid {
+        flex-flow: row wrap;
+    }
+
+    .mega-button-cell {
+        width: 50%;
+    }
+
+    .inner-cell {
+        margin: 0 5%;
     }
 }
 </style>

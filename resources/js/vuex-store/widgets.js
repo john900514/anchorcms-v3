@@ -2,11 +2,11 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 Vue.use(Vuex);
 
-
 const widgetsModule = {
     state: {
         widgets: {},
-        widgetsErrorMsg: ''
+        widgetsErrorMsg: '',
+        rightWidgetSwap: false,
     },
     mutations: {
         updateWidgetsObj(state, widgets) {
@@ -15,6 +15,10 @@ const widgetsModule = {
         },
         widgetsErrorMsg(state, msg) {
             state.widgetsErrorMsg = msg;
+        },
+        updateRightWidgetSwap(state, widgetId) {
+            console.log('updateRightWidgetSwap - Doing the swap');
+            state.rightWidgetSwap = widgetId;
         }
     },
     getters: {
@@ -50,6 +54,10 @@ const widgetsModule = {
                 .catch(err => {
                     console.log(err);
                 });
+        },
+        triggerRightWidgetSwap(context, clickId) {
+            console.log('Request to Swap right side widget to '+clickId);
+            context.commit('updateRightWidgetSwap', clickId);
         }
     }
 };

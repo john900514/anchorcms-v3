@@ -42,6 +42,16 @@
 
                 }
                 this.loading = false;
+            },
+            rightWidgetSwap(id) {
+                for(let x = 0; x < this.availableRightWidgets.length; x++) {
+                    console.log(this.availableRightWidgets[x]);
+                    if(this.availableRightWidgets[x].id === id) {
+                        this.rightWidgets = [];
+                        this.rightWidgets.push(this.availableRightWidgets[x]);
+                        break;
+                    }
+                }
             }
         },
         data() {
@@ -55,13 +65,13 @@
                 availableLeftWidgets: [],
                 availableRightWidgets: [],
                 availableTopWidgets: [],
-
             };
         },
         computed: {
             ...mapGetters({
                 widgets: 'dashboard/widgets',
-                widgetsErrorMsg: 'dashboard/widgetsErrorMsg'
+                widgetsErrorMsg: 'dashboard/widgetsErrorMsg',
+                rightWidgetSwap: 'dashboard/rightWidgetSwap',
             }),
             dashboardTitle() {
                 return `Reporting for ${this.clientName}`;

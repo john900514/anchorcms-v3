@@ -24,6 +24,9 @@ const dashboard = {
         widgetsErrorMsg (state, getters) {
             return state.widgets.widgetsErrorMsg;
         },
+        rightWidgetSwap (state, getters) {
+            return state.widgets.rightWidgetSwap;
+        },
     },
     actions: {
         getUserAvailableWidgets(context, args) {
