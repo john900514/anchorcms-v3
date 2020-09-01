@@ -245,4 +245,85 @@ class UsersCrudController extends CrudController
 
         return $redirect_location;
     }
+
+    /**
+     * The search function that is called by the data table.
+     *
+     * @return array JSON Array of cells in HTML form.
+     */
+    public function search()
+    {
+        $this->crud->hasAccessOrFail('list');
+        $this->crud->setOperation('list');
+
+        $totalRows = $this->crud->model->count();
+        $filteredRows = $this->crud->count();
+        $startIndex = $this->request->input('start') ?: 0;
+        // if a search term was present
+        if ($this->request->input('search') && $this->request->input('search')['value']) {
+            // filter the results accordingly
+            $this->crud->applySearchTerm($this->request->input('search')['value']);
+            // recalculate the number of filtered rows
+            $filteredRows = $this->crud->count();
+        }
+        // start the results according to the datatables pagination
+        if ($this->request->input('start')) {
+            $this->crud->skip((int) $this->request->input('start'));
+        }
+        // limit the number of results according to the datatables pagination
+        if ($this->request->input('length')) {
+            $this->crud->take((int) $this->request->input('length'));
+        }
+        // overwrite any order set in the setup() method with the datatables order
+        if ($this->request->input('order')) {
+            $column_number = $this->request->input('order')[0]['column'];
+            $column_direction = $this->request->input('order')[0]['dir'];
+            $column = $this->crud->findColumnById($column_number);
+            if ($column['tableColumn']) {
+                // clear any past orderBy rules
+                $this->crud->query->getQuery()->orders = null;
+                // apply the current orderBy rules
+                $this->crud->query->orderBy($column['name'], $column_direction);
+            }
+
+            // check for custom order logic in the column definition
+            if (isset($column['orderLogic'])) {
+                $this->crud->customOrderBy($column, $column_direction);
+            }
+        }
+        $entries = $this->crud->getEntries();
+
+        if(count($entries) > 0)
+        {
+            $has_all_access = Bouncer::is(backpack_user())->a('god');
+            foreach ($entries as $idx => $user)
+            {
+                // Dev is highest rank, no one can see devs if they aren't one
+                $lookup_user_is_a_dev = Bouncer::is($user)->a('god');
+                if(!$has_all_access)
+                {
+                    if($lookup_user_is_a_dev)
+                    {
+                        unset($entries[$idx]);
+                    }
+                    else
+                    {
+                        if((!backpack_user()->isHostUser()))
+                        {
+                            if($user->isHostUser())
+                            {
+                                unset($entries[$idx]);
+                            }
+                            else
+                            {
+                                // @todo - scope to make sure that client users have trickle down access
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        return $this->crud->getEntriesAsJsonForDatatables($entries, $totalRows, $filteredRows, $startIndex);
+    }
 }

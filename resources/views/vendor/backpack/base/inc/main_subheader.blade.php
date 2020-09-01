@@ -11,6 +11,16 @@
             <li class="breadcrumb-item active">Dashboard</li>
             @break
 
+            @case('reporting/kpi')
+            <li class="breadcrumb-item active"><a href="/dashboard">Dashboard</a></li>
+            <li class="breadcrumb-item active">Performance Indicators</li>
+            @break
+
+            @case('reporting/mailchimp')
+            <li class="breadcrumb-item active"><a href="/dashboard">Dashboard</a></li>
+            <li class="breadcrumb-item active">Mailchimp Reporting</li>
+            @break
+
             @case('push-notifications')
             <li class="breadcrumb-item active">Push Notifications</li>
             @break

@@ -23,6 +23,11 @@ class CheckIfAdmin
     private function checkIfUserIsAdmin($user)
     {
         // return ($user->is_admin == 1);
+        if(!$user->isHostUser())
+        {
+            session()->put('active_client', $user->client_id);
+        }
+
         return true;
     }
 
