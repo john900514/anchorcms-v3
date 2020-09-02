@@ -2,7 +2,9 @@
 
 namespace AnchorCMS\Http\Controllers\Admin;
 
+use AnchorCMS\Abilities;
 use AnchorCMS\Clients;
+use AnchorCMS\Permissions;
 use AnchorCMS\Roles;
 use Backpack\CRUD\CrudPanel;
 use Prologue\Alerts\Facades\Alert;
@@ -195,17 +197,26 @@ class RolesCrudController extends CrudController
                 unset($requested_abilities[$idx]);
             }
 
-            $role = $request->all()['name'];
-            $abilities = $role_model->getAssignedAbilities($role);
+            $role_id = $request->all()['id'];
+            $role = $role_model->find($role_id);
+            $abilities = $role_model->getAssignedAbilities($role->name, $role->client_id);
 
             if(count($abilities) > 0)
             {
                 // retract any abilities not in $requested_abilities
                 foreach ($abilities as $ability)
                 {
-                    if(!array_key_exists($ability['name'], $requested_abilities))
+                    if(!array_key_exists($ability['id'], $requested_abilities))
                     {
-                        Bouncer::disallow($role)->to($ability['name']);
+                        $permission = Permissions::whereAbilityId($ability['id'])
+                            ->whereEntityId($role->id)
+                            ->first();
+
+                        if(!is_null($permission))
+                        {
+                            $permission->delete();
+                        }
+                        //Bouncer::disallow($role->name)->to($ability);
                     }
                 }
             }
@@ -214,7 +225,60 @@ class RolesCrudController extends CrudController
             {
                 if(!is_null($req_ability))
                 {
-                    Bouncer::allow($role)->to($req_ability);
+                    $ab_record = Abilities::find($req_ability);
+                    //$ab_record = Abilities::whereName($req_ability)->whereClientId(backpack_user()->client_id)->first();
+
+                    if(!is_null($ab_record))
+                    {
+                        if(!is_null($ab_record->entity_id))
+                        {
+                            $model = new $ab_record->entity_type;
+                            $model = $model->find($ab_record->entity_id);
+
+                            if(!is_null($model))
+                            {
+                                $permission = Permissions::whereAbilityId($ab_record->id)
+                                    ->whereEntityId($role->id)
+                                    ->first();
+
+                                if(is_null($permission))
+                                {
+                                    Bouncer::allow($role)->to($ab_record, $model);
+
+                                    $permission = Permissions::whereAbilityId($ab_record->id)
+                                        ->whereEntityId($role->id)
+                                        ->first();
+
+                                    if(!is_null($permission))
+                                    {
+                                        $permission->entity_type = 'roles';
+                                        $permission->save();
+                                    }
+                                }
+                            }
+                        }
+                        else
+                        {
+                            $permission = Permissions::whereAbilityId($ab_record->id)
+                                ->whereEntityId($role->id)
+                                ->first();
+
+                            if(is_null($permission))
+                            {
+                                Bouncer::allow($role)->to($ab_record);
+
+                                $permission = Permissions::whereAbilityId($ab_record->id)
+                                    ->whereEntityId($role->id)
+                                    ->first();
+
+                                if(!is_null($permission))
+                                {
+                                    $permission->entity_type = 'roles';
+                                    $permission->save();
+                                }
+                            }
+                        }
+                    }
                 }
             }
 

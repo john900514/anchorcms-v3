@@ -43,6 +43,13 @@ class KPIReportingController extends Controller
 
         $args['client'] = $client;
 
-        return view('anchor-cms.reporting.kpi.index', $args);
+        $blade = 'anchor-cms.reporting.kpi.index';
+
+        if(backpack_user()->cannot('view-kpi-report-trufit'))
+        {
+            $blade = 'errors.401';
+        }
+
+        return view($blade, $args);
     }
 }

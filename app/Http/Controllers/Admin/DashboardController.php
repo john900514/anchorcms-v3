@@ -19,13 +19,16 @@ class DashboardController extends Controller
 
     public function index()
     {
+        $client_uuid = session()->has('active_client') ? session()->get('active_client') : backpack_user()->client_id;
         $args = [
             'page' => 'dashboard',
             //'sidebar_menu' => $this->menu_options()->getOptions('sidebar')
             'components' => [
                 'dashboard' => [
                     'layout' => 'default',
-                    'args' => []
+                    'args' => [
+                        'client' => $this->clients->find($client_uuid)
+                    ],
                 ]
             ]
         ];

@@ -83,7 +83,7 @@
                         console.log('Enabled Returned Data - ', data);
                         if(data['success']) {
                             for(let idx in data['assigned']) {
-                                let name = data['assigned'][idx]['name'];
+                                let name = data['assigned'][idx]['id'];
                                 if(name in _this.availableAbilities) {
                                     _this.availableAbilities[name].checked = true;
                                     _this.processChecked(_this.availableAbilities[name], name);
@@ -101,6 +101,7 @@
             },
             processChecked(item, name) {
                 console.log('Item Toggled - '+name, item);
+                name = parseInt(name);
                 this.availableAbilities[name] = item;
 
                 if(item.checked) {

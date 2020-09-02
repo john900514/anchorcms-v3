@@ -43,6 +43,13 @@ class MailchimpReportingController extends Controller
 
         $args['client'] = $client;
 
-        return view('anchor-cms.reporting.mailchimp.index', $args);
+        $blade = 'anchor-cms.reporting.mailchimp.index';
+
+        if(backpack_user()->cannot('view-mailchimp-integration'))
+        {
+            $blade = 'errors.401';
+        }
+
+        return view($blade, $args);
     }
 }

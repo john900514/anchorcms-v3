@@ -16,7 +16,7 @@
             <div class="box">
                 @if(count($components) > 0)
                     @foreach($components as $component => $config)
-                        @if($component == 'dashboard' && (backpack_user()->can('view-dashboard') || backpack_user()->can('view-all-dashboards')))
+                        @if($component == 'dashboard' && (backpack_user()->can('view-dashboard', $config['args']['client']) || backpack_user()->can('view-all-dashboards')))
                             @include('anchor-cms.dashboards.index')
                         @endif
 

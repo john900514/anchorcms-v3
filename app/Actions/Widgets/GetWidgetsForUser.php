@@ -4,6 +4,7 @@ namespace AnchorCMS\Actions\Widgets;
 
 use AnchorCMS\Clients;
 use AnchorCMS\Widgets;
+use Illuminate\Support\Facades\Log;
 use Silber\Bouncer\BouncerFacade as Bouncer;
 
 class GetWidgetsForUser
@@ -38,7 +39,8 @@ class GetWidgetsForUser
             // If god, get all widgets as available
             if(backpack_user()->isHostUser() && Bouncer::is(backpack_user())->a('god'))
             {
-                $widgets = $this->widgets->whereActive(1)->wherePage($page)->get();
+                $widgets = $this->widgets->whereClientId($client->id)
+                    ->whereActive(1)->wherePage($page)->get();
 
                 if(count($widgets) > 0)
                 {
@@ -72,7 +74,10 @@ class GetWidgetsForUser
                 {
                     // get all role_assigned_widgets as available, followed by user_assigned_widgets as also_available
                     $roles = backpack_user()->getRoles();
+                    $client_id = session()->has('active_client') ? session()->get('active_client') : backpack_user()->client_id;
+
                     $widgets = $this->widgets->whereActive(1)
+                        ->whereClientId($client_id)
                         ->wherePage($page);
 
                     foreach ($roles as $idx => $role)
@@ -97,7 +102,7 @@ class GetWidgetsForUser
                     {
                         foreach($widgets as $idx => $widget)
                         {
-                            if(!backpack_user()->can($widget->allowed_abilities))
+                            if(backpack_user()->cannot($widget->allowed_abilities, $widget))
                             {
                                 unset($widgets[$idx]);
                             }
@@ -156,9 +161,12 @@ class GetWidgetsForUser
                             {
                                 foreach ($allowed_abilities as $ability)
                                 {
-                                    if($access_granted = backpack_user()->can($ability))
+                                    if((!is_null($ability)))
                                     {
-                                        break;
+                                        if($access_granted = backpack_user()->can($ability, $widget))
+                                        {
+                                            break;
+                                        }
                                     }
                                 }
                             }
@@ -183,6 +191,10 @@ class GetWidgetsForUser
                 }
             }
 
+            if(count($results['default']) == 1 && (is_null($results['default'][0])))
+            {
+                unset($results['default'][0]);
+            }
         }
         catch(\Exception $e) {
             // @todo - Derp ?

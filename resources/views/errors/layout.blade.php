@@ -18,6 +18,13 @@
       font-weight: 700;
     }
 
+    .error_number .hr {
+        width: 100%;
+        display: flex;
+        flex-flow: row;
+        justify-content: center;
+    }
+
     .error_number hr {
       margin-top: 60px;
       margin-bottom: 0;
@@ -46,7 +53,10 @@
     <div class="error_number m-t-80">
       <small>ERROR</small><br>
       {{ $error_number }}
-      <hr>
+      <div class="hr">
+          <hr>
+      </div>
+
     </div>
     <div class="error_title">
       @yield('title')

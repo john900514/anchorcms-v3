@@ -37,7 +37,7 @@ class InternalAdminJSONController extends Controller
         {
             foreach ($records as $ability)
             {
-                $res[$ability->name] = $ability->title;
+                $res[$ability->id] = $ability->title;
             }
 
             $results = ['success' => true, 'abilities' => $res];
