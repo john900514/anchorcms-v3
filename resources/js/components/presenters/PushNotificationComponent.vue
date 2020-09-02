@@ -24,7 +24,22 @@
                         </div>
                     </div>
 
-                    <div class="bottom-row" v-if="selectedApp !== ''">
+                    <div class="bottom-row" v-if="firingMessage">
+                        <div :class="innerBottomRowClass" :style="'justify-content: center;'">
+                            <div class="filter-segment">
+                                <div class="inner-filter-segment">
+                                    <label class="select-label">Doing it.</label>
+                                    <div class="spinny-loader" v-if="firingMessage">
+                                    <div class="center-wrapper">
+                                        <i class="fad fa-galaxy fa-spin"></i>
+                                        <p>Sending Message...</p>
+                                    </div>
+                                </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bottom-row" v-else-if="selectedApp !== ''">
                         <div :class="innerBottomRowClass">
                             <label class="select-label c-panel">Control Panel</label>
                             <div class="filter-segment">
@@ -136,7 +151,7 @@
                                             ></v-text-field>
                                         </v-card-title>
                                         <v-data-table
-                                            v-model="selectedUser"
+                                            v-model="selectedUsers"
                                             :headers="tableHeaders"
                                             :items="users"
                                             :search="search"
@@ -171,7 +186,7 @@
         name: "PushNotificationComponent",
         vuetify : new Vuetify(opts),
         components: { Multiselect },
-        props: ['apps', 'client', 'isHost', 'loadingFilters', 'filters', 'amtUsers', 'users'],
+        props: ['apps', 'client', 'isHost', 'loadingFilters', 'filters', 'amtUsers', 'users', 'firingMessage'],
         watch: {
             appInput(app) {
                 this.selectedApp = app.app;
@@ -179,6 +194,9 @@
 
                 if(this.selectedApp !== '') {
                     this.$emit('ping-for-filters', this.selectedApp)
+                }
+                else {
+                    this.$emit('clear-loading');
                 }
             },
             filters(data) {
@@ -189,6 +207,9 @@
                     }
                     this.formReady = true;
                 }
+            },
+            selectedUsers(data) {
+                console.log('Updating selectedUsers - ', data);
             }
         },
         data() {
@@ -202,7 +223,7 @@
                 formReady: false,
                 selectedFilters: {},
                 search: '',
-                selectedUser: [],
+                selectedUsers: [],
                 tableHeaders: [
                     //{ text: 'Member ID', align: 'left', value: 'name', sortable: true},
                     { text: 'First Name', sortable: true, value: 'first_name'},
@@ -272,7 +293,7 @@
                 let amt = this.amtUsers;
 
                 if(this.showAvailablePeeps) {
-                    amt = this.selectedUser.length;
+                    amt = this.selectedUsers.length;
                 }
 
                 return amt;
@@ -332,10 +353,10 @@
             submitPanel() {
                 if(this.getAmtUsers > 0) {
                     if(this.textMsg !== '') {
-                        let entity =  (this.showAvailablePeeps) ? this.selectedUser : this.users;
+                        let entity =  (this.showAvailablePeeps) ? this.selectedUsers : this.users;
                         let users = [];
                         for(let x in entity) {
-                            users.push(entity.expo_push_token)
+                            users.push(entity[x].expo_push_token)
                         }
                         let payload = {
                             users: users,
@@ -541,6 +562,10 @@
             width: 100%;
             overflow-x: scroll;
             max-height: 40em;
+        }
+
+        .spinny-loader {
+            width: 100%;
         }
     }
 

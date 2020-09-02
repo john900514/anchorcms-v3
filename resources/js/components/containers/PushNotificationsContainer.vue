@@ -5,7 +5,10 @@
         :is-host="isHost"
         @ping-for-filters="ajaxGetNoteFilters"
         @ping-users="ajaxGetNoteUsers"
+        @fire="ajaxFireMessage"
+        @clear-loading="clearLoading"
         :loading-filters="loadingFilters"
+        :firing-message="firingMessage"
         :filters="filters"
         :amt-users="amtUsers"
         :users="users"
@@ -23,6 +26,7 @@
                 isHost: false,
                 loadingFilters: false,
                 loadingUsers: false,
+                firingMessage: false,
                 filters: '',
                 amtUsers: 0,
                 users: [],
@@ -135,6 +139,45 @@
                         _this.loadinloadingUsersgFilters = false;
                     }
                 });
+            },
+            ajaxFireMessage(payload) {
+                let _this = this;
+                this.firingMessage = true;
+
+                console.log('Prepare to fire message', payload);
+
+                axios.post(`/api/client/${this.clientId}/mobile/${this.selectedApp}/notifications/push/fire`, payload)
+                    .then(res => {
+                        console.log('Push Notes response - ', res);
+
+                        if('data' in res) {
+                            let data = res.data;
+
+                            if ('success' in data) {
+                                if (data['success']) {
+                                    alert('Success! Send another Message if you\'d like!');
+                                    _this.errorMsg = '';
+                                    _this.firingMessage = false;
+                                } else {
+                                    alert(data['reason']);
+                                    _this.firingMessage = false;
+                                }
+                            } else {
+                                // unknown response
+                                alert('Unknown Response from Anchor. Please Try Again.');
+                                _this.firingMessage = false;
+                            }
+                        }
+                    })
+                    .catch(e => {
+                        console.log(e);
+                        alert('Could not communicate with Anchor. Please Try Again.');
+                        _this.firingMessage = false;
+                    })
+            },
+            clearLoading() {
+                this.loadingFilters = false;
+                this.firingMessage = false;
             }
         },
         mounted() {

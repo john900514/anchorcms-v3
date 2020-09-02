@@ -2,10 +2,10 @@
 
 namespace AnchorCMS;
 
+use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use GoldSpecDigital\LaravelEloquentUUID\Database\Eloquent\Uuid;
-use Illuminate\Support\Facades\DB;
 
 class Widgets extends Model
 {

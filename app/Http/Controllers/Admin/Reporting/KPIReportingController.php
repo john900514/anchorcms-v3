@@ -45,7 +45,7 @@ class KPIReportingController extends Controller
 
         $blade = 'anchor-cms.reporting.kpi.index';
 
-        if(backpack_user()->cannot('view-kpi-report-trufit'))
+        if(backpack_user()->cannot('view-kpi-report', $client))
         {
             $blade = 'errors.401';
         }

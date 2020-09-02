@@ -40,6 +40,13 @@ class PushNotificationsController extends Controller
         // APP URL in its features for the client or empty
         $args['apps'] = $this->apps->getAllAppWithPushNotes($args['client']);
 
-        return view('anchor-cms.push-notes.index', $args);
+        $blade = 'anchor-cms.push-notes.index';
+
+        if(backpack_user()->cannot('manage-push-notifications'))
+        {
+            $blade = 'errors.401';
+        }
+
+        return view($blade, $args);
     }
 }
