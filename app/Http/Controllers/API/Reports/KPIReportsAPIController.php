@@ -50,8 +50,15 @@ class KPIReportsAPIController extends Controller
                         'Authorization' => 'Client '.base64_encode($client_id)
                     ];
 
+                    $data = $this->request->all();
+                    $pay_date = date('Y-m-d', strtotime('now -1DAY'));
+                    if(array_key_exists('date', $data))
+                    {
+                        $pay_date = date('Y-m-d', strtotime($data['date']));
+                    }
+
                     $payload = [
-                        'date' => date('Y-m-d', strtotime('now -1DAY'))
+                        'date' => $pay_date
                     ];
 
                     // Ping the client for the KPI data or fail

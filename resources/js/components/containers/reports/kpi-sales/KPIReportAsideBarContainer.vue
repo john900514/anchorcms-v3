@@ -16,7 +16,10 @@
                     <sexy-hurricane :loading-msg="loadingMsg"></sexy-hurricane>
                 </div>
             </div>
-            <kpi-aside v-else></kpi-aside>
+            <kpi-aside
+                :report-date="reportDate"
+                @date-changed="getReportForDate"
+                v-else></kpi-aside>
         </div>
     </div>
 </template>
@@ -36,15 +39,16 @@ export default {
     data() {
         return {
             loadingMsg: 'Loading Performance Options...',
-            errorIcon: 'fad fa-angry'
+            errorIcon: 'fad fa-angry',
         }
     },
     computed: {
-        ...mapState('kpi', ['loading', 'errorMsg']),
+        ...mapState('kpi', ['loading', 'errorMsg', 'reportDate']),
     },
     methods: {
         ...mapMutations({
-            setTitle: 'asidebar/contextTab/setTitle'
+            setTitle: 'asidebar/contextTab/setTitle',
+            setReportDate: 'kpi/reportDate'
         }),
         sillyErrorIcon(flag) {
             if(flag) {
@@ -53,6 +57,9 @@ export default {
             else {
                 this.errorIcon = 'fad fa-dizzy';
             }
+        },
+        getReportForDate(date) {
+            this.setReportDate(date);
         }
     },
     mounted() {

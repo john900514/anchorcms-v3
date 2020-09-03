@@ -8,7 +8,8 @@ const kpi = {
         return {
             loading: true,
             errorMsg: '',
-            report: ''
+            report: '',
+            reportDate: ''
         };
     },
     mutations: {
@@ -20,6 +21,9 @@ const kpi = {
         },
         report(state, report) {
             state.report = report;
+        },
+        reportDate(state, date) {
+            state.reportDate = date;
         }
     },
     getters: {
@@ -33,11 +37,24 @@ const kpi = {
             context.commit('errorMsg', '');
             context.commit('loading',false);
 
+            for(let elem in report) {
+                if('date' in report[elem]) {
+                    context.commit('reportDate', report[elem].date);
+                    break;
+                }
+            }
+
         },
         getKPIReport(context, clientId) {
             context.commit('loading',true);
 
-            axios.get(`/reports/${clientId}/kpi`)
+            let url = `/reports/${clientId}/kpi`;
+
+            if(context.state.reportDate !== '') {
+                url = url + `?date=${context.state.reportDate}`;
+            }
+
+            axios.get(url)
                 .then(res => {
                     console.log('KPI report response - ', res);
 

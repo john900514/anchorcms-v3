@@ -1,7 +1,10 @@
 <template>
     <div class="kpi-report-container">
         <div class="inner-kpi-report">
-            <kpi-sales v-if="!loading && (errorMsg === '')" :report="report"></kpi-sales>
+            <kpi-sales v-if="!loading && (errorMsg === '')"
+                       :report="report"
+                       :report-date="reportDate"
+            ></kpi-sales>
             <div class="loading errrr" v-if="!loading && (errorMsg !== '')">
                 <div class="inner-loading">
                     <div class="spinny-loader">
@@ -35,13 +38,19 @@ export default {
         SexyHurricane
     },
     props: ['clientId'],
+    watch: {
+        reportDate(date) {
+            console.log(`report date changed to ${date}...reaching out to server for update...`);
+            this.getKPIReport(this.clientId);
+        }
+    },
     data() {
         return {
             loadingMsg: 'Getting Latest Performance Reports...'
         };
     },
     computed: {
-        ...mapState('kpi', ['loading', 'errorMsg', 'report']),
+        ...mapState('kpi', ['loading', 'errorMsg', 'report', 'reportDate']),
         ...mapGetters({
 
         })

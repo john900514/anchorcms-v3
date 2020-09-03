@@ -7,7 +7,7 @@
                         <div class="inner-kpi-full-report" style="text-align: center">
                             <!-- Daily Sales -->
                             <div class="daily-sales-segment">
-                                <h2 class="sales-title">--- DAILY Sales ---</h2>
+                                <h2 class="sales-title">--- DAILY Sales for {{ reportDate }} ---</h2>
                                 <div class="inner-daily-sales row">
                                     <div class="report-table" v-for="(reportData, reportKey) in repData">
                                         <div class="card text-white bg-primary text-center">
@@ -32,7 +32,7 @@
                             </div>
 
                             <div class="monthly-sales-segment">
-                                <h2 style="text-align: center;">--- MONTHLY Sales ---</h2>
+                                <h2 class="sales-title">--- MONTHLY Sales for {{ reportDate }} ---</h2>
                             </div>
                         </div>
                     </div>
@@ -45,7 +45,7 @@
 <script>
 export default {
     name: "KPISalesFullReportScreenComponent",
-    props: ['report'],
+    props: ['report', 'reportDate'],
     watch: {
         report(stuff) {
             console.log('Received a new report! ', stuff);
