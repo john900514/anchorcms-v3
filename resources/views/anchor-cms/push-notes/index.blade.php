@@ -51,7 +51,6 @@
                     :apps="{{ json_encode($apps) }}"
                     :host-user="{{ $is_host }}"
                 ></push-notifications>
-
             </div>
         </div>
     </div>

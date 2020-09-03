@@ -56,7 +56,7 @@
         props: ['loading', 'error', 'report'],
         watch: {
             report(stuff) {
-                console.log('Recieved a new report! ', stuff);
+                console.log('Received a new report! ', stuff);
                 this.repData = stuff;
             }
         },

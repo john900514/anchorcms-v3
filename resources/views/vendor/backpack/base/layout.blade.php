@@ -10,9 +10,7 @@
         </div>
 
         @if(config('backpack.base.use_right_sidebar'))
-            <div class="c-sidebar c-sidebar-lg c-sidebar-light c-sidebar-right c-sidebar-overlaid" id="aside">
-                @include('backpack::inc.right-sidebar')
-            </div>
+            @include('backpack::inc.right-sidebar')
         @endif
 
         <div class="c-wrapper">
