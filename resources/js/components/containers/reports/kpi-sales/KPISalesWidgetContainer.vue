@@ -28,9 +28,22 @@
             })
         },
         mounted() {
-            this.getKPIReport(this.clientId);
+            if(this.report === '') {
+                console.log('Empty report');
+                if(this.loading) {
+                    console.log('Loading tho, so gonna chill')
+                }
+                else {
+                    console.log('KPISalesContainer mounted!');
+                    this.getKPIReport(this.clientId);
+                }
+            }
+            else
+            {
+                console.log('KPISalesContainer mounted!', this.report);
+            }
 
-            console.log('KPISalesContainer mounted!');
+
         }
     }
 </script>

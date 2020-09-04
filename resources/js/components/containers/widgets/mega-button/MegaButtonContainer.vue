@@ -38,15 +38,29 @@
             retrieveWidgetButtons() {
                 let mc_btn = {
                     text: 'Email Reports',
-                    image: 'https://us17.admin.mailchimp.com/images/brand_assets/logos/mc-freddie-dark.svg',
+                    image: 'https://cdn.icon-icons.com/icons2/2108/PNG/512/mailchimp_icon_130881.png',
                     id: "7a977872-5825-4a9a-bf96-4e4d754db20a"
                 };
 
                 this.buttons.push(mc_btn);
+
+                let fb_btn = {
+                    text: 'Social Media Reports',
+                    image: 'https://amchorcms-assets.s3.amazonaws.com/kindpng_324348.png',
+                    id: "bb21c2aa-2eb2-4ae0-80e8-583b4466f458"
+                };
+                this.buttons.push(fb_btn);
+
+                let google_btn = {
+                    text: 'Google SEM Reports',
+                    image: 'https://amchorcms-assets.s3.amazonaws.com/Google-Adwords-Icon-01.png',
+                    id: "5e7f6e06-0abf-4b65-b26c-bc9f1e8c8ea9"
+                };
+                this.buttons.push(google_btn);
+
                 let kpi_btn = {
                     text: 'Performance Reports',
-                    //image: 'https://cdn.onlinewebfonts.com/svg/img_553433.png',
-                    image: 'https://amchorcms-assets.s3.amazonaws.com/UIHere.png',
+                    image: 'https://amchorcms-assets.s3.amazonaws.com/kissclipart-statistics-clipart-computer-icons-chart-statistics-0939c5c52324c727.png',
                     id: "1be5d918-56e6-4b9e-96d2-14e4684dffca"
                 };
                 this.buttons.push(kpi_btn);

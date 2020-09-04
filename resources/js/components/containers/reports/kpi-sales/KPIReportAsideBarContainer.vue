@@ -22,6 +22,7 @@
                 :reports="report"
                 @toggle-report="toggleReport"
                 @toggle-roi="toggleROI"
+                :new-roi-options="newRoiOptions"
             v-else></kpi-aside>
         </div>
     </div>
@@ -39,14 +40,21 @@ export default {
         KpiAside,
         SexyHurricane
     },
+    watch: {
+        roiOptions(options) {
+            console.log('aside bar detecting new options - ', options);
+            this.newRoiOptions = options;
+        }
+    },
     data() {
         return {
             loadingMsg: 'Loading Performance Options...',
             errorIcon: 'fad fa-angry',
+            newRoiOptions: ''
         }
     },
     computed: {
-        ...mapState('kpi', ['loading', 'errorMsg', 'report','reportDate']),
+        ...mapState('kpi', ['loading', 'errorMsg', 'report','reportDate', 'roiOptions', 'roiMode']),
     },
     methods: {
         ...mapMutations({

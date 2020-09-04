@@ -43,6 +43,22 @@ class KPIReportingController extends Controller
 
         $args['client'] = $client;
 
+        $args['roi'] = 'none';
+
+        $data = $this->request->all();
+        if(array_key_exists('roi', $data))
+        {
+            switch($data['roi'])
+            {
+                case 'all':
+                case 'google':
+                case 'facebook':
+                case 'fb':
+                    $args['roi'] = $data['roi'];
+                    break;
+            }
+        }
+
         $blade = 'anchor-cms.reporting.kpi.index';
 
         if(backpack_user()->cannot('view-kpi-report', $client))

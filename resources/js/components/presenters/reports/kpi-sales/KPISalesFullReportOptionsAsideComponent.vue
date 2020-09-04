@@ -51,7 +51,7 @@
 <script>
 export default {
     name: "KPISalesFullReportOptionsAsideComponent",
-    props: ['reportDate', 'reports'],
+    props: ['reportDate', 'reports', 'newRoiOptions'],
     watch: {
         reports(report) {
             console.log('received new report -', report);
@@ -61,6 +61,23 @@ export default {
         },
         selectedReportDate(date) {
             this.$emit('date-changed', date);
+        },
+        newRoiOptions(options) {
+            console.log('Updating options', options)
+            this.roiOptions = options;
+
+            if(options.none) {
+                this.toggleROI('none', options.none);
+            }
+            else if(options.all) {
+                this.toggleROI('all', options.all);
+            }
+            else if(options.fb) {
+                this.toggleROI('fb', options.fb);
+            }
+            else if(options.google) {
+                this.toggleROI('google', options.google);
+            }
         }
     },
     data() {
@@ -167,6 +184,25 @@ export default {
     },
     mounted() {
         this.setReportDate(this.reportDate);
+
+        if(this.newRoiOptions !== '') {
+            console.log('Mounted! toggling options', this.newRoiOptions);
+            this.roiOptions = this.newRoiOptions;
+            let options = this.roiOptions;
+
+            if(options.none) {
+                this.toggleROI('none', options.none);
+            }
+            else if(options.all) {
+                this.toggleROI('all', options.all);
+            }
+            else if(options.fb) {
+                this.toggleROI('fb', options.fb);
+            }
+            else if(options.google) {
+                this.toggleROI('google', options.google);
+            }
+        }
     }
 }
 </script>

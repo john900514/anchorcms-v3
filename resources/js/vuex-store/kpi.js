@@ -6,7 +6,7 @@ const kpi = {
     namespaced: true,
     state() {
         return {
-            loading: true,
+            loading: false,
             errorMsg: '',
             report: '',
             reportDate: '',
@@ -81,10 +81,17 @@ const kpi = {
             }
 
             context.commit('report', report);
+
+            if(context.state.roiMode) {
+                if(!context.state.roiOptions.none) {
+                    console.log('Restoring ROI Mode', context.state.roiOptions);
+                    setTimeout(function () { context.dispatch('roiModeTriggered', context.state.roiOptions); }, 100)
+                }
+            }
         },
         getKPIReport(context, clientId) {
             context.commit('loading',true);
-            context.commit('roiMode',false);
+            //context.commit('roiMode',false);
 
             let url = `/reports/${clientId}/kpi`;
 
@@ -136,8 +143,7 @@ const kpi = {
         },
         roiModeDisabled(context) {
             context.commit('roiMode', false);
-            context.commit('roiOptions', {});
-
+            //context.commit('roiOptions', {});
 
             for(let reportName in context.state.report) {
                 if(reportName !== 'sales-by-market-cnb') {

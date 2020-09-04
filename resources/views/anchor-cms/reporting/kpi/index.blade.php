@@ -23,6 +23,7 @@
             <div class="box">
                 <kpi-full-report
                     client-id="{!! $client->id !!}"
+                    starting-roi-mode="{!! $roi !!}"
                 ></kpi-full-report>
             </div>
         </div>

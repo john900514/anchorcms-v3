@@ -80,8 +80,7 @@
             },
         },
         methods: {
-            transformNumber(n)
-            {
+            transformNumber(n) {
                 let results = 0;
                 // Is int.
                 if(Number(n) === n && n % 1 === 0)
@@ -95,6 +94,12 @@
                 return results;
             }
         },
+        mounted() {
+            if(this.report !== '') {
+                console.log('Preloading report!')
+                this.repData = this.report;
+            }
+        }
     }
 </script>
 

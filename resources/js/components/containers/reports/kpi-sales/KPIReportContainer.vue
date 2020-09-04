@@ -31,7 +31,7 @@
 <script>
 import SexyHurricane from "../../../presenters/widgets/loading/SexyHurricane";
 import KpiSales from "../../../presenters/reports/kpi-sales/KPISalesFullReportScreenComponent";
-import { mapGetters, mapState, mapActions } from 'vuex';
+import { mapMutations, mapState, mapActions } from 'vuex';
 
 export default {
     name: "KPIReportContainer",
@@ -39,16 +39,27 @@ export default {
         KpiSales,
         SexyHurricane
     },
-    props: ['clientId'],
+    props: ['clientId', 'startingRoiMode'],
     watch: {
         reportDate(date) {
-            console.log(`report date changed to ${date}...reaching out to server for update...`);
-            this.getKPIReport(this.clientId);
+            if(!this.ready) {
+                console.log(`First report of the load received! It belongs to date ${date}...ready to go!`);
+                this.ready = true;
+                this.initRoiMode(this.startingRoiMode);
+            }
+            else {
+                console.log(`report date changed to ${date}...reaching out to server for update...`);
+                this.getKPIReport(this.clientId);
+            }
+        },
+        loading(flag) {
+
         }
     },
     data() {
         return {
-            loadingMsg: 'Getting Latest Performance Reports...'
+            loadingMsg: 'Getting Latest Performance Reports...',
+            ready: false
         };
     },
     computed: {
@@ -60,8 +71,54 @@ export default {
         },
         ...mapActions({
             setContextTabActiveComponent: 'asidebar/setContextTabActiveComponent',
-            getKPIReport: 'kpi/getKPIReport'
-        })
+            getKPIReport: 'kpi/getKPIReport',
+            roiModeTriggered: 'kpi/roiModeTriggered',
+        }),
+        ...mapMutations({
+            setRoiMode: 'kpi/roiMode',
+            setRoiOptions: 'kpi/roiOptions'
+        }),
+        initRoiMode(mode) {
+            console.log('initRoiMode - starting mode to '+mode);
+            switch(mode) {
+                case 'all':
+                    this.roiModeTriggered({
+                        'none': false,
+                        'all': true,
+                        'fb': true,
+                        'google': true,
+                    });
+                    break;
+
+                case 'fb':
+                case 'facebook':
+                    this.roiModeTriggered({
+                        'none': false,
+                        'all': false,
+                        'fb': true,
+                        'google': false,
+                    });
+                    break;
+
+                case 'google':
+                    this.roiModeTriggered({
+                        'none': false,
+                        'all': false,
+                        'fb': false,
+                        'google': true,
+                    });
+                    break;
+
+                default:
+                    this.setRoiMode(false);
+                    this.setRoiOptions({
+                        'none': true,
+                        'all': false,
+                        'fb': false,
+                        'google': false,
+                    });
+            }
+        }
     },
     mounted() {
         this.initAsideBar();
