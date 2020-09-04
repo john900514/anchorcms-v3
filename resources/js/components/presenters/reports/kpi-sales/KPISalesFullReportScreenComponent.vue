@@ -9,7 +9,7 @@
                             <div class="daily-sales-segment">
                                 <h2 class="sales-title">--- DAILY Sales for {{ reportDate }} ---</h2>
                                 <div class="inner-daily-sales row">
-                                    <div class="report-table" v-for="(reportData, reportKey) in repData">
+                                    <div class="report-table" v-for="(reportData, reportKey) in repData" v-if="reportData['show']">
                                         <div class="card text-white bg-primary text-center">
                                             <div class="card-header"><h2 style="text-align: center;">{{ reportData.name }}</h2></div>
                                             <div class="card-body">

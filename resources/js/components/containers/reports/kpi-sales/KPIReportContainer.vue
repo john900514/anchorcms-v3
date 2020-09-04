@@ -51,9 +51,6 @@ export default {
     },
     computed: {
         ...mapState('kpi', ['loading', 'errorMsg', 'report', 'reportDate']),
-        ...mapGetters({
-
-        })
     },
     methods: {
         initAsideBar() {

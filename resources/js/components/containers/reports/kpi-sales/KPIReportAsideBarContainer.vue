@@ -19,7 +19,10 @@
             <kpi-aside
                 :report-date="reportDate"
                 @date-changed="getReportForDate"
-                v-else></kpi-aside>
+                :reports="report"
+                @toggle-report="toggleReport"
+                @toggle-roi="toggleROI"
+            v-else></kpi-aside>
         </div>
     </div>
 </template>
@@ -28,7 +31,7 @@
 
 import SexyHurricane from "../../../presenters/widgets/loading/SexyHurricane";
 import KpiAside from "../../../presenters/reports/kpi-sales/KPISalesFullReportOptionsAsideComponent";
-import {mapMutations, mapState} from 'vuex';
+import {mapMutations, mapState, mapActions} from 'vuex';
 
 export default {
     name: "KPIReportAsideBarContainer",
@@ -43,12 +46,17 @@ export default {
         }
     },
     computed: {
-        ...mapState('kpi', ['loading', 'errorMsg', 'reportDate']),
+        ...mapState('kpi', ['loading', 'errorMsg', 'report','reportDate']),
     },
     methods: {
         ...mapMutations({
             setTitle: 'asidebar/contextTab/setTitle',
-            setReportDate: 'kpi/reportDate'
+            setReportDate: 'kpi/reportDate',
+            switchOutReport: 'kpi/switchOutReport'
+        }),
+        ...mapActions({
+            roiModeTriggered: 'kpi/roiModeTriggered',
+            roiModeDisabled: 'kpi/roiModeDisabled'
         }),
         sillyErrorIcon(flag) {
             if(flag) {
@@ -60,6 +68,26 @@ export default {
         },
         getReportForDate(date) {
             this.setReportDate(date);
+        },
+        toggleReport(slug) {
+            if(slug in this.report)
+            {
+                this.switchOutReport(slug);
+            }
+            else {
+                console.log('Cannot locate '+slug+' in the report obj.')
+            }
+        },
+        toggleROI(options) {
+            console.log('ROI options - ', options);
+            if(options.none) {
+                this.roiModeDisabled();
+            }
+            else {
+                if((options.all) || (options.fb) || (options.google)) {
+                    this.roiModeTriggered();
+                }
+            }
         }
     },
     mounted() {
