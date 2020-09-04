@@ -4,6 +4,8 @@
             <kpi-sales v-if="!loading && (errorMsg === '')"
                        :report="report"
                        :report-date="reportDate"
+                       :roi-mode="roiMode"
+                       :roi-options="roiOptions"
             ></kpi-sales>
             <div class="loading errrr" v-if="!loading && (errorMsg !== '')">
                 <div class="inner-loading">
@@ -50,7 +52,7 @@ export default {
         };
     },
     computed: {
-        ...mapState('kpi', ['loading', 'errorMsg', 'report', 'reportDate']),
+        ...mapState('kpi', ['loading', 'errorMsg', 'report', 'reportDate', 'roiMode', 'roiOptions']),
     },
     methods: {
         initAsideBar() {

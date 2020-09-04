@@ -85,7 +85,7 @@ export default {
             }
             else {
                 if((options.all) || (options.fb) || (options.google)) {
-                    this.roiModeTriggered();
+                    this.roiModeTriggered(options);
                 }
             }
         }

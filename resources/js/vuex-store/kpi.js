@@ -10,7 +10,8 @@ const kpi = {
             errorMsg: '',
             report: '',
             reportDate: '',
-            roiMode: false
+            roiMode: false,
+            roiOptions: {}
         };
     },
     mutations: {
@@ -52,6 +53,9 @@ const kpi = {
         },
         roiMode(state, flag) {
             state.roiMode = flag;
+        },
+        roiOptions(state, options) {
+            state.roiOptions = options;
         }
     },
     getters: {
@@ -80,6 +84,7 @@ const kpi = {
         },
         getKPIReport(context, clientId) {
             context.commit('loading',true);
+            context.commit('roiMode',false);
 
             let url = `/reports/${clientId}/kpi`;
 
@@ -116,7 +121,7 @@ const kpi = {
                     context.commit('loading',false);
                 });
         },
-        roiModeTriggered(context) {
+        roiModeTriggered(context, options) {
             for(let reportName in context.state.report) {
                 if(reportName !== 'sales-by-market-cnb') {
                     if(context.state.report[reportName].show) {
@@ -127,9 +132,12 @@ const kpi = {
 
             context.commit('roiMode', true);
             context.commit('switchOutReport', 'sales-by-market-cnb');
+            context.commit('roiOptions', options);
         },
         roiModeDisabled(context) {
             context.commit('roiMode', false);
+            context.commit('roiOptions', {});
+
 
             for(let reportName in context.state.report) {
                 if(reportName !== 'sales-by-market-cnb') {

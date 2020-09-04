@@ -9,18 +9,28 @@
                             <div class="daily-sales-segment">
                                 <h2 class="sales-title">--- DAILY Sales for {{ reportDate }} ---</h2>
                                 <div class="inner-daily-sales row">
-                                    <div class="report-table" v-for="(reportData, reportKey) in repData" v-if="reportData['show']">
+                                    <div :class="getReportTableClass(reportKey)" v-for="(reportData, reportKey) in repData" v-if="reportData['show']">
                                         <div class="card text-white bg-primary text-center">
                                             <div class="card-header"><h2 style="text-align: center;">{{ reportData.name }}</h2></div>
                                             <div class="card-body">
                                                 <blockquote class="card-bodyquote">
                                                     <table style="margin:1em auto;">
                                                         <thead>
-                                                        <tr><th v-for="(columnName, cidx) in  reportData.columns">{{columnName}}</th></tr>
+                                                            <tr>
+                                                                <th v-for="(columnName, cidx) in  reportData.columns">{{columnName}}</th>
+
+                                                                <th v-if="roiMode && (reportKey === 'sales-by-market-cnb')">{{ getRoiColName(1) }}</th>
+                                                                <th v-if="roiMode && (reportKey === 'sales-by-market-cnb')">{{ getRoiColName(2) }}</th>
+                                                                <th v-if="roiMode && (reportKey === 'sales-by-market-cnb')">{{ getRoiColName(3) }}</th>
+                                                            </tr>
                                                         </thead>
                                                         <tbody>
                                                         <tr v-for="(marketData, marketName) in  reportData.report">
                                                             <td v-for="(mval, mcol) in marketData">{{ typeof(mval) !== 'number' ? mval : transformNumber(mval) }}</td>
+
+                                                            <td v-if="roiMode">{{ getRoiValVal(marketName, 'spend') }}</td>
+                                                            <td v-if="roiMode">{{ getRoiValVal(marketName, '3mo') }}</td>
+                                                            <td v-if="roiMode">{{ getRoiValVal(marketName, '12mo') }}</td>
                                                         </tr>
                                                         </tbody>
                                                     </table>
@@ -45,7 +55,7 @@
 <script>
 export default {
     name: "KPISalesFullReportScreenComponent",
-    props: ['report', 'reportDate'],
+    props: ['report', 'reportDate', 'roiMode', 'roiOptions'],
     watch: {
         report(stuff) {
             console.log('Received a new report! ', stuff);
@@ -72,8 +82,15 @@ export default {
         },
     },
     methods: {
-        transformNumber(n)
-        {
+        getReportTableClass(key) {
+            let results = 'report-table';
+            if(this.roiMode && (key === 'sales-by-market-cnb')) {
+                results = 'roi-table'
+            }
+
+            return results;
+        },
+        transformNumber(n) {
             let results = 0;
             // Is int.
             if(Number(n) === n && n % 1 === 0)
@@ -84,6 +101,94 @@ export default {
             {
                 results = parseFloat(n).toFixed(2);
             }
+            return results;
+        },
+        getRoiColName(n) {
+            let results = '';
+            switch(n) {
+                case 1:
+                    if(this.roiOptions.all) {
+                        results = 'Spend';
+                    }
+                    else if(this.roiOptions.fb) {
+                        results = 'FB/IG Spend';
+                    }
+                    else if(this.roiOptions.google) {
+                        results = 'Google Spend';
+
+                    }
+                    else {
+                        results = false;
+                    }
+                break;
+
+                case 2:
+                    if(this.roiOptions.all) {
+                        results = '3Mo Roi';
+                    }
+                    else if(this.roiOptions.fb) {
+                        results = 'FB/IG 3Mo Roi';
+                    }
+                    else if(this.roiOptions.google) {
+                        results = 'Google 3Mo Roi';
+                    }
+                    else {
+                        results = false;
+                    }
+                    break;
+
+                case 3:
+                    if(this.roiOptions.all) {
+                        results = '12Mo Roi';
+                    }
+                    else if(this.roiOptions.fb) {
+                        results = 'FB/IG 12Mo Roi';
+                    }
+                    else if(this.roiOptions.google) {
+                        results = 'Google 12Mo Roi';
+                    }
+                    else {
+                        results = false;
+                    }
+                    break;
+
+                default:
+                    results = false;
+            }
+
+            return results;
+        },
+        getRoiValVal(market, col) {
+            let results = 0;
+
+            if(this.roiOptions.all) {
+                if(this.report['sales-by-market-cnb']['roi']['all'][col][market] === '') {
+                    results = '';
+                }
+                else {
+                    results = parseFloat(this.report['sales-by-market-cnb']['roi']['all'][col][market]).toFixed(2);
+                }
+
+            }
+            else if(this.roiOptions.fb) {
+                if(this.report['sales-by-market-cnb']['roi']['fb'][col][market] === '') {
+                    results = '';
+                }
+                else {
+                    results = parseFloat(this.report['sales-by-market-cnb']['roi']['fb'][col][market]).toFixed(2);
+                }
+
+            }
+            else if(this.roiOptions.google) {
+                if(this.report['sales-by-market-cnb']['roi']['google'][col][market] === '') {
+                    results = '';
+                }
+                else {
+                    results = parseFloat(this.report['sales-by-market-cnb']['roi']['google'][col][market]).toFixed(2);
+                }
+
+            }
+
             return results;
         }
     },
@@ -153,6 +258,10 @@ export default {
             flex-flow: row;
             justify-content: space-between;
             margin: 0 30%;
+        }
+
+        .roi-table {
+            width: 100%;
         }
     }
 
