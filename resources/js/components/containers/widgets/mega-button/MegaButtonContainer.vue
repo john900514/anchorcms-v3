@@ -38,7 +38,7 @@
             retrieveWidgetButtons() {
                 let mc_btn = {
                     text: 'Email Reports',
-                    image: 'https://cdn.icon-icons.com/icons2/2108/PNG/512/mailchimp_icon_130881.png',
+                    image: 'https://amchorcms-assets.s3.amazonaws.com/Daco_2054005.png',
                     id: "7a977872-5825-4a9a-bf96-4e4d754db20a"
                 };
 
