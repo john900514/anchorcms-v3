@@ -166,7 +166,12 @@ export default {
                     results = '';
                 }
                 else {
-                    results = parseFloat(this.report['sales-by-market-cnb']['roi']['all'][col][market]).toFixed(2);
+                    if(col === 'spend') {
+                        results = parseFloat(this.report['sales-by-market-cnb']['roi']['all'][col][market]).toFixed(2);
+                    }
+                    else {
+                        results = parseFloat(this.report['sales-by-market-cnb']['roi']['all'][col][market] * 100).toFixed(2)+'%';
+                    }
                 }
 
             }
@@ -175,7 +180,12 @@ export default {
                     results = '';
                 }
                 else {
-                    results = parseFloat(this.report['sales-by-market-cnb']['roi']['fb'][col][market]).toFixed(2);
+                    if(col === 'spend') {
+                        results = parseFloat(this.report['sales-by-market-cnb']['roi']['fb'][col][market]).toFixed(2);
+                    }
+                    else {
+                        results = parseFloat(this.report['sales-by-market-cnb']['roi']['fb'][col][market] * 100).toFixed(2)+'%';
+                    }
                 }
 
             }
@@ -184,7 +194,12 @@ export default {
                     results = '';
                 }
                 else {
-                    results = parseFloat(this.report['sales-by-market-cnb']['roi']['google'][col][market]).toFixed(2);
+                    if(col === 'spend') {
+                        results = parseFloat(this.report['sales-by-market-cnb']['roi']['google'][col][market]).toFixed(2);
+                    }
+                    else {
+                        results = parseFloat(this.report['sales-by-market-cnb']['roi']['google'][col][market] * 100).toFixed(2)+'%';
+                    }
                 }
 
             }
