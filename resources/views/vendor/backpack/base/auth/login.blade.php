@@ -11,7 +11,7 @@
 
 @section('content')
     <div class="">
-        <div class="col-md-12 col-md-offset-12">
+        <div class="">
             @if (session('status'))
                 <div class="alert alert-success">
                     {{ session('status') }}
@@ -21,12 +21,11 @@
             <h3 class="text-center m-b-20">{{ $title }}</h3>
             <div class="box">
                 <div class="box-body">
-                    <form class="col-md-12 p-t-10" role="form" method="POST" action="{{ route('backpack.auth.login') }}">
+                    <form class="" role="form" method="POST" action="{{ route('backpack.auth.login') }}">
                         {!! csrf_field() !!}
 
-                        <div class="form-group{{ $errors->has($username) ? ' has-error' : '' }}">
+                        <div class="form-group{{ $errors->has($username) ? ' has-error' : '' }} username">
                             <label class="control-label">{{ config('backpack.base.authentication_column_name') }}</label>
-
                             <div>
                                 <input type="text" class="form-control" name="{{ $username }}" value="{{ old($username) }}">
 
@@ -38,7 +37,7 @@
                             </div>
                         </div>
 
-                        <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
+                        <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }} password">
                             <label class="control-label">{{ trans('backpack::base.password') }}</label>
 
                             <div>
@@ -62,7 +61,7 @@
                             </div>
                         </div>
 
-                        <div class="form-group">
+                        <div class="form-group submit">
                             <div>
                                 <button type="submit" class="btn btn-block btn-primary">
                                     {{ trans('backpack::base.login') }}
@@ -93,6 +92,7 @@
 
             .container {
                 height: 100%;
+                padding: 0 !important;
             }
 
             .inner-container {
@@ -128,6 +128,52 @@
 
             .inner-logo-header img {
                 width: 100%;
+            }
+
+            footer {
+                margin-bottom: 2em;
+            }
+        }
+
+        @media screen and (max-width: 999px) {
+            .form-group label {
+                margin-left: 5%;
+            }
+
+            .form-group.username {
+                width: 100%;
+            }
+
+            .form-group.username div {
+                margin: 0 5%;
+            }
+
+            .form-group.username .form-control {
+                width: 95%;
+            }
+
+            .form-group.password {
+                width: 100%;
+            }
+
+            .form-group.password div {
+                margin: 0 5%;
+            }
+
+            .form-group.password .form-control {
+                width: 95%;
+            }
+
+            .form-group.submit {
+                width: 100%;
+            }
+
+            .form-group.submit div {
+                margin: 0 5%;
+            }
+
+            .form-group.submit button {
+                width: 95%;
             }
         }
 

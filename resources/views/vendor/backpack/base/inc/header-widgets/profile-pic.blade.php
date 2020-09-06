@@ -39,7 +39,7 @@
             <i class="fal fa-lock c-icon mfe-2"></i> Lock Account
         </a>
         -->
-        <a class="dropdown-item" href="logout">
+        <a class="dropdown-item" href="{!! backpack_url() !!}/logout">
             <i class="fad fa-portal-exit fa-flip c-icon mfe-2"></i> Logout
         </a>
     </div>

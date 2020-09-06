@@ -17,7 +17,6 @@
     </ul>
 
     <!-- Ooooh, light and dark mode toggles -->
-
     <ul class="c-header-nav mfs-auto">
         <li class="c-header-nav-item px-3 c-d-legacy-none">
             <button class="c-class-toggler c-header-nav-btn" type="button" id="header-tooltip" data-target="body" data-class="c-dark-theme" data-toggle="c-tooltip" data-placement="bottom" title="" data-original-title="Toggle Light/Dark Mode">
@@ -26,7 +25,6 @@
             </button>
         </li>
     </ul>
-
 
     <ul class="c-header-nav">
         @if(backpack_user()->can('receieve-notifications'))
