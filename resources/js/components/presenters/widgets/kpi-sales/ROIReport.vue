@@ -23,8 +23,8 @@
                                 <tr v-for="(marketData, marketName) in  data.report">
                                     <td v-for="(mval, mcol) in marketData" v-if="(mcol === 'market') || (mcol === 'memberships')">{{ typeof(mval) !== 'number' ? mval : transformNumber(mval) }}</td>
                                     <td>{{ numFormat(data['roi'][getElem(report)]['spend'][marketName]) }}</td>
-                                    <td>{{ numFormat(data['roi'][getElem(report)]['3mo'][marketName]) }}</td>
-                                    <td>{{ numFormat(data['roi'][getElem(report)]['12mo'][marketName]) }}</td>
+                                    <td>{{ numFormat(data['roi'][getElem(report)]['3mo'][marketName]) }}{{ data['roi'][getElem(report)]['3mo'][marketName] === '' ? '' : '%' }}</td>
+                                    <td>{{ numFormat(data['roi'][getElem(report)]['12mo'][marketName]) }}{{ data['roi'][getElem(report)]['12mo'][marketName] === '' ? '' : '%' }}</td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -66,7 +66,7 @@ export default {
         },
         numFormat(num) {
             if(num !== '') {
-                return parseFloat(num).toFixed(2);
+                return parseFloat(num * 100).toFixed(2);
             }
             else {
                 return '';
