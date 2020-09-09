@@ -7,6 +7,20 @@
 
 {{-- Encrypted CSRF token for Laravel, in order for Ajax requests to work --}}
 <meta name="csrf-token" content="{{ csrf_token() }}" />
+<meta name="description" content="AnchorCMS">
+<meta name="author" content="Cape&Bay \\ capeandbay.com">
+<meta name="keywords" content="anchor, anchorcms, cms, clients, capeandbay">
+
+<meta property="og:title" content="Anchor CMS">
+<meta property="og:description" content="AnchorCMS">
+
+<meta property="og:image" content="https://capeandbay.com/wp-content/uploads/2019/11/cropped-favicon-180x180.png">
+<meta property="og:url" content="{!! env('APP_URL') !!}">
+<meta property="og:video" content="https://i.vimeocdn.com/video/945480185.webp" />
+<meta property="og:video:type" content="video" />
+<meta property="og:video:width" content="1280" />
+<meta property="og:video:height" content="720" />
+
 <link rel="icon" href="https://capeandbay.com/wp-content/uploads/2019/11/cropped-favicon-32x32.png" sizes="32x32">
 <link rel="icon" href="https://capeandbay.com/wp-content/uploads/2019/11/cropped-favicon-192x192.png" sizes="192x192">
 <link rel="apple-touch-icon-precomposed" href="https://capeandbay.com/wp-content/uploads/2019/11/cropped-favicon-180x180.png">
