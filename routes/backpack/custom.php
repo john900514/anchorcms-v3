@@ -11,6 +11,7 @@ Route::group([
     'namespace'  => 'AnchorCMS\Http\Controllers',
 ], function () { // custom admin routes
     Route::get('/login', 'Auth\LoginController@showLoginForm')->name('backpack.auth.login');
+    Route::get('/logout', 'Auth\LoginController@logout')->name('backpack.auth.logout');
     //Route::get('/registration', 'Auth\LoginController@render_complete_registration');
 });
 

@@ -2,6 +2,7 @@
 
 namespace AnchorCMS\Http\Middleware;
 
+use AnchorCMS\UserActiveClients;
 use Closure;
 
 class CheckIfAdmin
@@ -26,6 +27,15 @@ class CheckIfAdmin
         if(!$user->isHostUser())
         {
             session()->put('active_client', $user->client_id);
+        }
+        else
+        {
+            $sesh = UserActiveClients::whereUserId(backpack_user()->id)->first();
+
+            if(!is_null($sesh))
+            {
+                session()->put('active_client', $sesh->client_id);
+            }
         }
 
         return true;
