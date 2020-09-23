@@ -14,8 +14,9 @@
                                 <tr>
                                     <th v-for="(columnName, cidx) in  data.columns" v-if="(columnName === 'Market') || (columnName === 'Memberships')">{{columnName}}</th>
                                     <th>{{ getName(report) + ' Spend' }}</th>
-                                    <th>{{ getName(report) + ' 3Mo ROI' }}</th>
-                                    <th>{{ getName(report) + ' 12Mo ROI' }}</th>
+                                    <th>{{ getName(report) + ' MTD ROI' }}</th>
+                                    <!--<th>{{ getName(report) + ' 3Mo ROI' }}</th>-->
+                                    <!--<th>{{ getName(report) + ' 12Mo ROI' }}</th>-->
                                 </tr>
                                 </thead>
 
@@ -23,8 +24,9 @@
                                 <tr v-for="(marketData, marketName) in  data.report">
                                     <td v-for="(mval, mcol) in marketData" v-if="(mcol === 'market') || (mcol === 'memberships')">{{ typeof(mval) !== 'number' ? mval : transformNumber(mval) }}</td>
                                     <td>{{ numSpend(data['roi'][getElem(report)]['spend'][marketName]) }}</td>
-                                    <td>{{ numFormat(data['roi'][getElem(report)]['3mo'][marketName]) }}{{ data['roi'][getElem(report)]['3mo'][marketName] === '' ? '' : '%' }}</td>
-                                    <td>{{ numFormat(data['roi'][getElem(report)]['12mo'][marketName]) }}{{ data['roi'][getElem(report)]['12mo'][marketName] === '' ? '' : '%' }}</td>
+                                    <td>{{ numFormat(data['roi'][getElem(report)]['3mo'][marketName]) }}{{ data['roi'][getElem(report)]['1mo'][marketName] === '' ? '' : '%' }}</td>
+                                    <!--<td>{{ numFormat(data['roi'][getElem(report)]['3mo'][marketName]) }}{{ data['roi'][getElem(report)]['3mo'][marketName] === '' ? '' : '%' }}</td>-->
+                                    <!--<td>{{ numFormat(data['roi'][getElem(report)]['12mo'][marketName]) }}{{ data['roi'][getElem(report)]['12mo'][marketName] === '' ? '' : '%' }}</td>-->
                                 </tr>
                                 </tbody>
                             </table>
@@ -57,12 +59,13 @@ export default {
             }
         },
         getName(report) {
-           if(report === 'facebook') {
-               return 'Facebook/IG.'
-           }
-           else {
-               return 'Google'
-           }
+           // if(report === 'facebook') {
+           //     return 'Facebook/IG.'
+           // }
+           // else {
+           //     return 'Google'
+           // }
+            return '';
         },
         numSpend(num) {
             if(num !== '') {

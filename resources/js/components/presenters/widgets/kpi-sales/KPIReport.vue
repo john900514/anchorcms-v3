@@ -96,7 +96,7 @@
         },
         mounted() {
             if(this.report !== '') {
-                console.log('Preloading report!')
+                console.log('Preloading report!');
                 this.repData = this.report;
             }
         }

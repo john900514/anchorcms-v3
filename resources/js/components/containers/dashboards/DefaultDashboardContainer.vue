@@ -109,7 +109,7 @@
                 for(let x in widgets['default']) {
                     switch(widgets['default'][x]['location']) {
                         case 'left':
-                            this.leftWidgets.push(widgets['default'][x])
+                            this.leftWidgets.push(widgets['default'][x]);
                             break;
 
                         case 'right':
@@ -118,7 +118,7 @@
 
                         case 'center':
                         default:
-                            this.topWidgets.push(widgets['default'][x])
+                            this.topWidgets.push(widgets['default'][x]);
                     }
                 }
 
