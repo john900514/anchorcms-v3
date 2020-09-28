@@ -1,0 +1,36 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+class CreatePixelActivitiesTable extends Migration
+{
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
+    {
+        Schema::create('pixel_activity', function (Blueprint $table) {
+            $table->uuid('id')->unique()->primary();
+            $table->string('pixel_id');
+            $table->string('activity');
+            $table->string('value')->nullable();
+            $table->longText('misc')->nullable();
+            $table->timestamps();
+            $table->softDeletes();
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        Schema::dropIfExists('pixel_activity');
+    }
+}

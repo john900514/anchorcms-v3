@@ -46,7 +46,23 @@ class RouteServiceProvider extends ServiceProvider
 
         $this->mapWebRoutes();
 
-        //
+        $this->mapTrackingPixelRoutes();
+    }
+
+    /**
+     * Define the "pixel" routes for the application.
+     *
+     * These routes are typically stateless like the API route, except design
+     * to be used with the "pizza" tracking pixel
+     *
+     * @return void
+     */
+    protected function mapTrackingPixelRoutes() : void
+    {
+        Route::prefix('pizza')
+            ->middleware('api')
+            ->namespace($this->namespace.'\Pizza')
+            ->group(base_path('routes/pixel.php'));
     }
 
     /**

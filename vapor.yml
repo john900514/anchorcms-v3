@@ -9,11 +9,13 @@ environments:
       memory: 1024
       cli-memory: 512
       gateway-version: 2
+      queue-concurrency: 1
       queue-timeout: 600
       timeout: 120
       runtime: php-7.4
       queues:
         - anchor-production-emails
+        - anchor-production-events
       build:
         - 'composer install --no-dev --no-interaction'
         - 'php artisan event:cache'
@@ -27,11 +29,13 @@ environments:
       memory: 1024
       cli-memory: 512
       gateway-version: 2
+      queue-concurrency: 1
       queue-timeout: 600
       timeout: 120
       runtime: php-7.4
       queues:
         - anchor-staging-emails
+        - anchor-staging-events
       build:
           - 'composer install --no-dev --no-interaction'
           - 'php artisan event:cache'
