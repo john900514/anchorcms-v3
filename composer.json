@@ -10,6 +10,7 @@
     "require": {
         "php": "^7.2",
         "backpack/crud": "^3.6",
+        "capeandbay/mailchimp": "dev-master",
         "fideloper/proxy": "^4.0",
         "fruitcake/laravel-cors": "^2.0",
         "goldspecdigital/laravel-eloquent-uuid": "^6.0",
@@ -21,8 +22,7 @@
         "league/flysystem-aws-s3-v3": "^1.0",
         "silber/bouncer": "v1.0.0-rc.8",
         "spatie/laravel-activitylog": "^3.14",
-        "spatie/laravel-event-sourcing": "^4.3",
-        "capeandbay/mailchimp": "dev-master"
+        "spatie/laravel-event-sourcing": "^4.3"
     },
     "require-dev": {
         "andrey-helldar/laravel-app": "^1.0",

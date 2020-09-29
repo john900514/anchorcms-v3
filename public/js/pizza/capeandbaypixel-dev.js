@@ -112,6 +112,7 @@
                 suffix = 'test';
             break;
 
+            case 'develop':
             case 'staging':
                 subDomain = 'anchor-dev.';
                 break;
@@ -129,6 +130,18 @@
     api.track = (t) => {
         console.log('tracking - '+t);
         data['tracking'] = t;
+
+        if(window.pizza.loaded) {
+            if('activity' in data) {
+                delete data['activity'];
+            }
+
+            if('click' in data) {
+                delete data['click'];
+            }
+
+            api.send();
+        }
     };
 
     api.collect = (a) => {
@@ -140,8 +153,31 @@
                 delete data['tracking'];
             }
 
+            if('click' in data) {
+                delete data['click'];
+            }
+
             api.send();
         }
+    };
+
+    api.click = (ev) => {
+        console.log('click event - ', [ev]);
+
+        data['click'] = ev;
+
+        if(window.pizza.loaded) {
+            if('tracking' in data) {
+                delete data['tracking'];
+            }
+
+            if('activity' in data) {
+                delete data['activity'];
+            }
+        }
+
+        api.send();
+
     };
 
 
@@ -152,13 +188,35 @@
         }
     };
 
+    var buttonAttrs = document.querySelectorAll('[data-pizza-topping]');
+
+    for(let x = 0, l = buttonAttrs.length; x < l; x++) {
+        buttonAttrs[x].addEventListener('click', ($event) => {
+            console.log($event);
+
+            /* @todo - complete this
+            // Get the data-pizza-topping (which is an event)
+            let topping = ''
+
+            //Curate the Payload
+            let payload = {
+                click: topping,
+                attrs: {}
+            };
+
+            // api.click (it will send on its own)
+            api.click(payload);
+            */
+        });
+    }
+
     // pull functions off of the global queue and execute them
     const execute = function() {
         // while the global queue is not empty, remove the first element and execute the
         // function with the parameter it provides
         // (assuming that the queued element is a 2 element list of the form
         // [function, parameters])
-
+        window.pizza.loaded = false;
         let command = window.pizza.q[0];
         if(command !== undefined) {
             let func = command[0];
@@ -174,6 +232,7 @@
                     api.performNext();
                 }
 
+                window.pizza.loaded = true;
             }
             else {
                 window.pizza.q.shift();
@@ -184,6 +243,7 @@
                 else {
                     api.performNext();
                 }
+                window.pizza.loaded = true;
             }
         }
     };
