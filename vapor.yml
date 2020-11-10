@@ -8,7 +8,6 @@ environments:
         - clients.capeandbay.com
       memory: 1024
       cli-memory: 512
-      gateway-version: 2
       queue-concurrency: 1
       queue-timeout: 600
       timeout: 120
@@ -28,7 +27,6 @@ environments:
       domain: anchor-dev.capeandbay.com
       memory: 1024
       cli-memory: 512
-      gateway-version: 2
       queue-concurrency: 1
       queue-timeout: 600
       timeout: 120
